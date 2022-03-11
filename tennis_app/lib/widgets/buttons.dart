@@ -33,23 +33,26 @@ class SimpleButton extends StatelessWidget {
         onTap: () {
           print("Click");
         },
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            color: fillcolor,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: bordercolor),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey,
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: Offset(3, 3))
-            ],
-          ),
-          child: Center(child: Text(text, style: TextStyle(color: textcolor))),
-        ));
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            child: Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                color: fillcolor,
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: bordercolor),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: Offset(3, 3))
+                ],
+              ),
+              child:
+                  Center(child: Text(text, style: TextStyle(color: textcolor))),
+            )));
   }
 }
 
@@ -64,19 +67,19 @@ IconicButton(
 )
 */
 class IconicButton extends StatelessWidget {
-  final Color bordercolor_i;
-  final Color fillcolor_i;
-  final Color textcolor_i;
-  final String text_i;
+  final Color bordercolor;
+  final Color fillcolor;
+  final Color textcolor;
+  final String text;
   final double height;
   final double width;
   // final Icon icon_type;
 
   const IconicButton({
-    required this.bordercolor_i,
-    required this.fillcolor_i,
-    required this.textcolor_i,
-    required this.text_i,
+    required this.bordercolor,
+    required this.fillcolor,
+    required this.textcolor,
+    required this.text,
     required this.width,
     required this.height,
     // required this.icon_type,
@@ -90,10 +93,10 @@ class IconicButton extends StatelessWidget {
             height: height,
             width: width,
             decoration: BoxDecoration(
-              color: fillcolor_i,
+              color: fillcolor,
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: bordercolor_i),
-              boxShadow: [
+              border: Border.all(color: bordercolor),
+              boxShadow: const [
                 BoxShadow(
                     color: Colors.grey,
                     spreadRadius: 1,
@@ -106,11 +109,57 @@ class IconicButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.sports_baseball_outlined),
+                const Icon(Icons.sports_baseball_outlined),
                 Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(text_i, style: TextStyle(color: textcolor_i))),
+                    padding: const EdgeInsets.all(10),
+                    child: Text(text, style: TextStyle(color: textcolor))),
               ],
             )));
+  }
+}
+
+class DateInputWidget extends StatelessWidget {
+  final String title;
+  final String text;
+  final VoidCallback onClicked;
+
+  const DateInputWidget({
+    required this.title,
+    required this.text,
+    required this.onClicked,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: onClicked,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+                width: 277,
+                height: 38,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(4)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(text),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Icon(Icons.calendar_today),
+                    ),
+                  ],
+                )),
+          ],
+        ));
   }
 }
