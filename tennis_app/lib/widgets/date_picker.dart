@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'buttons.dart';
 
 class DatePickerWidget extends StatefulWidget {
+  const DatePickerWidget({Key? key}) : super(key: key);
+
   @override
   _DatePickerWidgetState createState() => _DatePickerWidgetState();
 }
