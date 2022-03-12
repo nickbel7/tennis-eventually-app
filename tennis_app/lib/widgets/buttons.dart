@@ -19,40 +19,52 @@ class SimpleButton extends StatelessWidget {
   final double width;
 
   const SimpleButton({
+    Key? key,
     required this.bordercolor,
     required this.fillcolor,
     required this.textcolor,
     required this.text,
     required this.width,
     required this.height,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          print("Click");
-        },
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Container(
-              height: height,
-              width: width,
-              decoration: BoxDecoration(
-                color: fillcolor,
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: bordercolor),
-                boxShadow: const [
-                  BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: Offset(3, 3))
-                ],
+      onTap: () {
+        print("Click");
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        child: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            color: fillcolor,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: bordercolor),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.grey,
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: Offset(3, 3),
               ),
-              child:
-                  Center(child: Text(text, style: TextStyle(color: textcolor))),
-            )));
+            ],
+          ),
+          child: Center(
+            child: Text(
+              text, 
+              style: TextStyle(
+                color: textcolor,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        )
+      )
+    );
   }
 }
 

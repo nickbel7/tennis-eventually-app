@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/home.dart';
+import 'package:tennis_app/profile.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import './bookings.dart';
 
@@ -12,9 +14,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: 'Tennis EveNTUAlly',
-      home: MyHomePage(title: 'Tennis EveNTUAlly'),
+      home: const MyHomePage(
+        title: 'Tennis EveNTUAlly',
+      ),
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppTheme.colors.backdrop,
+      ),
     );
   }
 }
@@ -29,6 +36,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
   int _selectedIndex = 0;
 
   void _onTabTapped(int index) {
@@ -37,20 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  static List<Widget> _pages = <Widget>[
-    bookingsList,
-    Icon(
-      Icons.camera,
+  static final List<Widget> _pages = <Widget>[
+    const HomePage(),
+    const BookingsPage(),
+    const Icon(
+      Icons.search,
       size: 150,
     ),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
-    Icon(
-      Icons.linked_camera,
-      size: 150,
-    ),
+    const ProfilePage(),
   ]; 
 
   @override
@@ -107,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         iconSize: 30,
         selectedFontSize: 15,
         unselectedFontSize: 15,
+        elevation: 12,
         items: const  [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
