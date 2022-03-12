@@ -3,8 +3,22 @@ import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  void _pushBooking() {
+
+  }
+
+  void _pushOpponent() {
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +30,18 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget> [
+            children: <Widget> [
               IconButton(
                 text: "BOOK COURT", 
                 width: 340, 
-                height: 60
+                height: 60,
+                onClick: _pushBooking,
               ),
               ButtonOutlined(
                 text: "REQUEST OPPONENT", 
                 width: 340, 
-                height: 40
+                height: 40,
+                onClick: _pushOpponent,
               ),
             ],
           ),
@@ -104,6 +120,8 @@ class IconButton extends StatelessWidget {
   final double width;
   // final Icon icon_type;
 
+  final VoidCallback? onClick;
+
   const IconButton({
     Key? key,
     // required this.bordercolor_i,
@@ -112,13 +130,14 @@ class IconButton extends StatelessWidget {
     required this.text,
     required this.width,
     required this.height,
+    this.onClick,
     // required this.icon_type,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onClick,
       child: Container(
         height: height,
         width: width,
@@ -167,17 +186,20 @@ class ButtonOutlined extends StatelessWidget {
   final double height;
   final double width;
 
+  final VoidCallback? onClick;
+
   const ButtonOutlined({
     Key? key,
     required this.text,
     required this.width,
     required this.height,
+    this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onClick,
       child: Container(
         height: height,
         width: width,
