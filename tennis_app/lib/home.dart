@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:faker/faker.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,35 +54,38 @@ class HomePage extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
             // height: 400,
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 14.0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 1,
+            child: GridView.builder(
+              // crossAxisCount: 2,
+              // crossAxisSpacing: 14.0,
+              // mainAxisSpacing: 0,
+              // childAspectRatio: 1,
               physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
               // IMPLEMENTATION WITH GENERATOR
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //   crossAxisCount: 2,
-              //   crossAxisSpacing: 14.0,
-              //   mainAxisSpacing: 14.0,
-              //   childAspectRatio: 1,
-              // ),
-              // itemCount: 20,
-              // itemBuilder: (context, index) {
-              //   return const PlayerCard();
-              // },
-              children: const [
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-                PlayerCard(),
-              ],
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 14.0,
+                mainAxisSpacing: 0,
+                childAspectRatio: 1,
+              ),
+              itemCount: 50,
+              itemBuilder: (context, index) {
+                return PlayerCard(
+                  firstName: faker.person.firstName(),
+                  lastName: faker.person.lastName(),
+                );
+              },
+              // children: const [
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              //   PlayerCard(),
+              // ],
             )
           )
         ),
@@ -209,7 +213,14 @@ class ButtonOutlined extends StatelessWidget {
 
 class PlayerCard extends StatelessWidget {
   
-  const PlayerCard({Key? key}) : super(key: key);
+  final String firstName;
+  final String lastName;
+
+  const PlayerCard({
+    Key? key,
+    required this.firstName,
+    required this.lastName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -234,10 +245,15 @@ class PlayerCard extends StatelessWidget {
                 // width: 73,
                 // height: 73,
                 flex: 2,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                  child: Image.asset(
-                    "assets/avatar.png"
+                child: SizedBox(
+                  height: 75,
+                  width: 75,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    child: Image.asset(
+                      "assets/avatar.png",
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ), 
               ),
@@ -251,12 +267,12 @@ class PlayerCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:[
-                      const SizedBox(
+                      SizedBox(
                         width: 70,
                         height: 50,
                         child: Text(
-                          "Name\nSurname",
-                          style: TextStyle(
+                          firstName+'\n'+lastName,
+                          style: const TextStyle(
                               color: Color(0xffe4deb3),
                               fontSize: 13,
                               fontFamily: "Nunito",
