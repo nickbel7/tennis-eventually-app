@@ -87,7 +87,7 @@ class CourtCardWidget extends StatefulWidget {
 }
 
 class _CourtCardState extends State<CourtCardWidget> {
-  bool selectedDay = false;
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _CourtCardState extends State<CourtCardWidget> {
           child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  selectedDay = !selectedDay;
+                  selected = !selected;
                 });
               },
               style: ButtonStyle(
@@ -113,7 +113,7 @@ class _CourtCardState extends State<CourtCardWidget> {
                   style: TextStyle(color: AppTheme.colors.sandStorm))),
         ),
         Visibility(
-          visible: selectedDay,
+          visible: selected,
           child: Container(
               width: 316,
               height: 36,
@@ -132,7 +132,7 @@ class _CourtCardState extends State<CourtCardWidget> {
                   )
                 ],
               )),
-        )
+        ),
       ],
     );
   }
