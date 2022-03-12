@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/home.dart';
 import 'package:tennis_app/profile.dart';
+import 'package:tennis_app/search.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import './bookings.dart';
 
@@ -48,10 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static final List<Widget> _pages = <Widget>[
     const HomePage(),
     const BookingsPage(),
-    const Icon(
-      Icons.search,
-      size: 150,
-    ),
+    const SearchPage(),
     const ProfilePage(),
   ]; 
 
