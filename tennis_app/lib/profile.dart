@@ -40,7 +40,7 @@ class ProfilePage extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Container(
-                  height: 150,
+                  // height: 150,
                   margin: const EdgeInsets.only(left: 10),
                   // decoration: BoxDecoration(
                   //   border: Border.all(color: const Color(0xFFFF0000)),

@@ -41,25 +41,25 @@ class _SearchPageState extends State<SearchPage> {
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Column(
-          children: <Widget>[
-            SearchWidget(
-              text: query, 
-              onChanged: searchPlayer, 
-              hintText: 'Search'
+        children: <Widget>[
+          SearchWidget(
+            text: query, 
+            onChanged: searchPlayer, 
+            hintText: 'Search'
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: players.length,
+              itemBuilder: (context,index){
+                return PlayerTile(
+                  fisrtName: players[index].firstName, 
+                  lastName: players[index].lastName
+                );
+              }
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: players.length,
-                itemBuilder: (context,index){
-                  return PlayerTile(
-                    fisrtName: players[index].firstName, 
-                    lastName: players[index].lastName
-                  );
-                }
-              ),
-            )
-          ],
-        ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -75,7 +75,9 @@ class Player{
 }
 
 final List<Player> allPlayers = List.generate(
-    50, 
-    (index) => new Player(
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName()));
+  50, 
+  (index) => Player(
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+  )
+);

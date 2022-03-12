@@ -31,37 +31,37 @@ class _SearchWidgetState extends State<SearchWidget> {
     final style = widget.text.isEmpty ? styleHint : styleActive;
 
     return Container(
-      // width: 328,
       height: 40,
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0,),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Colors.black, width: 1, ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4, ),
-      child: 
-      TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          suffixIcon: widget.text.isNotEmpty
-              ? GestureDetector(
-                  child: Icon(Icons.close, color: style.color),
-                  onTap: () {
-                    controller.clear();
-                    widget.onChanged('');
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                )
-              : null,
-          hintText: widget.hintText,
-          hintStyle: style,
-          
-          border: InputBorder.none,
-          icon: Icon(Icons.search, color: style.color),
+        border: Border.all(
+          color: Colors.black,
+          width: 1,
         ),
+      ),
+      child: TextField(
+        controller: controller,
         textAlignVertical: TextAlignVertical.center,
         style: style,
         onChanged: widget.onChanged,
+        decoration: InputDecoration(
+          suffixIcon: widget.text.isNotEmpty
+            ? GestureDetector(
+                child: Icon(Icons.close, color: style.color),
+                onTap: () {
+                  controller.clear();
+                  widget.onChanged('');
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+              )
+            : null,
+          hintText: widget.hintText,
+          hintStyle: style,
+          border: InputBorder.none,
+          icon: Icon(Icons.search, color: style.color),
+        ),
       ),
     );
   }
