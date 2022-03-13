@@ -68,7 +68,7 @@ class HourSlotWidgetState extends StatelessWidget {
           Text(
             text,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xffe4deb3),
               fontSize: 14,
             ),
@@ -91,49 +91,52 @@ class _CourtCardState extends State<CourtCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          width: 316,
-          height: 36,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 316,
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    selected = !selected;
+                  });
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        AppTheme.colors.amazonGreen)),
+                child: Text('13:00-14:00',
+                    style: TextStyle(color: AppTheme.colors.sandStorm))),
           ),
-          child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  selected = !selected;
-                });
-              },
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      AppTheme.colors.amazonGreen)),
-              child: Text('13:00-14:00',
-                  style: TextStyle(color: AppTheme.colors.sandStorm))),
-        ),
-        Visibility(
-          visible: selected,
-          child: Container(
-              width: 316,
-              height: 36,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppTheme.colors.sandStorm,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  CourtWidgetState(
-                    text: 'Court 1',
-                  ),
-                  CourtWidgetState(
-                    text: 'Court 2',
-                  )
-                ],
-              )),
-        ),
-      ],
+          Visibility(
+            visible: selected,
+            child: Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                width: 316,
+                height: 36,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.colors.sandStorm,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    CourtWidgetState(
+                      text: 'Court 1',
+                    ),
+                    CourtWidgetState(
+                      text: 'Court 2',
+                    )
+                  ],
+                )),
+          ),
+        ],
+      ),
     );
   }
 }
