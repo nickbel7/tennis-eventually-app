@@ -17,6 +17,7 @@ class SimpleButton extends StatelessWidget {
   final String text;
   final double height;
   final double width;
+  final VoidCallback? onClick;
 
   const SimpleButton({
     Key? key,
@@ -26,14 +27,13 @@ class SimpleButton extends StatelessWidget {
     required this.text,
     required this.width,
     required this.height,
+    this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          print("Click");
-        },
+        onTap: onClick,
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Container(
@@ -150,27 +150,29 @@ class DateInputWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  width: 277,
-                  height: 38,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: Text(text),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: Icon(Icons.calendar_today),
-                      ),
-                    ],
-                  )),
+              Expanded(
+                child: Container(
+                    // width: 277,
+                    height: 38,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text(text),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Icon(Icons.calendar_today),
+                        ),
+                      ],
+                    )),
+              ),
             ],
           )),
     );

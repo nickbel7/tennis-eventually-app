@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             backgroundColor: AppTheme.colors.grassGreen,
             centerTitle: true),
-        body: HomeBookingPage(),
+        body: const HomeBookingPage(),
       );
     }));
   }
