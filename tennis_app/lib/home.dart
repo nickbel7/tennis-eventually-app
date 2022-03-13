@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
+import 'home_opponent.dart';
+import './home_booking.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,13 +13,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   void _pushBooking() {
-
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+            title: const Text('Tennis EveNTUAlly',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            backgroundColor: AppTheme.colors.grassGreen,
+            centerTitle: true),
+        body: HomeBookingPage(),
+      );
+    }));
   }
 
   void _pushOpponent() {
-    
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+            title: const Text('Tennis EveNTUAlly',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            backgroundColor: AppTheme.colors.grassGreen,
+            centerTitle: true),
+        body: const HomeOpponentPage(),
+      );
+    }));
   }
 
   @override
@@ -30,16 +51,16 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget> [
+            children: <Widget>[
               IconButton(
-                text: "BOOK COURT", 
-                width: 340, 
+                text: "BOOK COURT",
+                width: 340,
                 height: 60,
                 onClick: _pushBooking,
               ),
               ButtonOutlined(
-                text: "REQUEST OPPONENT", 
-                width: 340, 
+                text: "REQUEST OPPONENT",
+                width: 340,
                 height: 40,
                 onClick: _pushOpponent,
               ),
@@ -62,56 +83,55 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppTheme.colors.amazonGreen,
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            ),
-            margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
-            // height: 400,
-            child: GridView.builder(
-              // crossAxisCount: 2,
-              // crossAxisSpacing: 14.0,
-              // mainAxisSpacing: 0,
-              // childAspectRatio: 1,
-              physics: const AlwaysScrollableScrollPhysics(),
-              shrinkWrap: true,
-              // IMPLEMENTATION WITH GENERATOR
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 14.0,
-                mainAxisSpacing: 0,
-                childAspectRatio: 1,
-              ),
-              itemCount: 50,
-              itemBuilder: (context, index) {
-                return PlayerCard(
-                  firstName: faker.person.firstName(),
-                  lastName: faker.person.lastName(),
-                );
-              },
-              // children: const [
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              //   PlayerCard(),
-              // ],
-            )
-          )
-        ),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.colors.amazonGreen,
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
+                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
+                // height: 400,
+                child: GridView.builder(
+                  // crossAxisCount: 2,
+                  // crossAxisSpacing: 14.0,
+                  // mainAxisSpacing: 0,
+                  // childAspectRatio: 1,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  // IMPLEMENTATION WITH GENERATOR
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 14.0,
+                    mainAxisSpacing: 0,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: 50,
+                  itemBuilder: (context, index) {
+                    return PlayerCard(
+                      firstName: faker.person.firstName(),
+                      lastName: faker.person.lastName(),
+                    );
+                  },
+                  // children: const [
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  //   PlayerCard(),
+                  // ],
+                ))),
       ],
     );
   }
 }
 
 class IconButton extends StatelessWidget {
-
   // final Color bordercolor_i;
   // final Color fillcolor_i;
   // final Color textcolor_i;
@@ -148,10 +168,10 @@ class IconButton extends StatelessWidget {
           // border: Border.all(color: bordercolor_i),
           boxShadow: const [
             BoxShadow(
-              color: Colors.grey,
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(3, 3))
+                color: Colors.grey,
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: Offset(3, 3))
           ],
         ),
         child: Row(
@@ -159,20 +179,19 @@ class IconButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             Icon(
+            Icon(
               Icons.sports_baseball,
               color: AppTheme.colors.tennisBall,
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppTheme.colors.backdrop,
-                ),
-              )
-            ),
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.colors.backdrop,
+                  ),
+                )),
           ],
         ),
       ),
@@ -181,7 +200,6 @@ class IconButton extends StatelessWidget {
 }
 
 class ButtonOutlined extends StatelessWidget {
-
   final String text;
   final double height;
   final double width;
@@ -210,23 +228,22 @@ class ButtonOutlined extends StatelessWidget {
           border: Border.all(color: const Color(0x0F000000)),
           boxShadow: const [
             BoxShadow(
-              color: Colors.grey,
-              spreadRadius: 0.5,
-              blurRadius: 5,
-              offset: Offset(2, 2))
+                color: Colors.grey,
+                spreadRadius: 0.5,
+                blurRadius: 5,
+                offset: Offset(2, 2))
           ],
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.colors.amazonGreen,
-              ),
-            )
-          ),
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppTheme.colors.amazonGreen,
+                ),
+              )),
         ),
       ),
     );
@@ -234,7 +251,6 @@ class ButtonOutlined extends StatelessWidget {
 }
 
 class PlayerCard extends StatelessWidget {
-  
   final String firstName;
   final String lastName;
 
@@ -257,12 +273,12 @@ class PlayerCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:[
+        children: [
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:[
+            children: [
               Flexible(
                 // width: 73,
                 // height: 73,
@@ -277,7 +293,7 @@ class PlayerCard extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                ), 
+                ),
               ),
               // const SizedBox(width: 5),
               Flexible(
@@ -288,17 +304,17 @@ class PlayerCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:[
+                    children: [
                       SizedBox(
                         width: 70,
                         height: 50,
                         child: Text(
-                          firstName+'\n'+lastName,
+                          firstName + '\n' + lastName,
                           style: const TextStyle(
-                              color: Color(0xffe4deb3),
-                              fontSize: 13,
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.w700,
+                            color: Color(0xffe4deb3),
+                            fontSize: 13,
+                            fontFamily: "Nunito",
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -307,7 +323,7 @@ class PlayerCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children:[
+                        children: [
                           Icon(
                             Icons.star,
                             color: AppTheme.colors.tennisBall,
@@ -336,22 +352,16 @@ class PlayerCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:[
+            children: [
               const SizedBox(width: 5),
-              Icon(
-                FontAwesomeIcons.whatsapp, 
-                color: AppTheme.colors.sandStorm, 
-                size: 22.0),
+              Icon(FontAwesomeIcons.whatsapp,
+                  color: AppTheme.colors.sandStorm, size: 22.0),
               const SizedBox(width: 15),
-              Icon(
-                FontAwesomeIcons.instagram, 
-                color: AppTheme.colors.sandStorm, 
-                size: 22.0),
+              Icon(FontAwesomeIcons.instagram,
+                  color: AppTheme.colors.sandStorm, size: 22.0),
               const SizedBox(width: 15),
-              Icon(
-                FontAwesomeIcons.facebookF, 
-                color: AppTheme.colors.sandStorm, 
-                size: 20.0),
+              Icon(FontAwesomeIcons.facebookF,
+                  color: AppTheme.colors.sandStorm, size: 20.0),
             ],
           ),
           // const SizedBox(height: 10),
@@ -365,27 +375,30 @@ class PlayerCard extends StatelessWidget {
                 width: 1,
               ),
             ),
-            padding: const EdgeInsets.only(left: 3, right: 5, ),
+            padding: const EdgeInsets.only(
+              left: 3,
+              right: 5,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children:[
+              children: [
                 Icon(
                   Icons.watch_later,
-                  color: AppTheme.colors.sandStorm,  
+                  color: AppTheme.colors.sandStorm,
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
+                  children: [
                     Text(
                       "Mon.",
                       textAlign: TextAlign.right,
                       style: TextStyle(
-                          color: AppTheme.colors.sandStorm,
-                          fontSize: 14,
+                        color: AppTheme.colors.sandStorm,
+                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(width: 5),
