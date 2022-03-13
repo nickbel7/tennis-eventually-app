@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
+import 'package:tennis_app/widgets/headers.dart';
+import 'package:tennis_app/widgets/data_tiles.dart';
 
 class BookingsPage extends StatelessWidget {
   
@@ -38,110 +40,6 @@ class BookingsPage extends StatelessWidget {
           fontColor: AppTheme.colors.totallyBlack,
         ),
       ],
-    );
-  }
-}
-
-class SectionHeader extends StatelessWidget {
-
-  final String header;
-
-  const SectionHeader({
-    Key? key,
-    required this.header,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            width: 319,
-            height: 28,
-            child: Text(
-              header,
-              style: TextStyle(
-                color: AppTheme.colors.totallyBlack,
-                fontSize: 20,
-                fontFamily: "Nunito",
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-        ),
-        Container(
-          width: 330,
-          height: 1,
-          color: AppTheme.colors.totallyBlack,
-          margin: const EdgeInsets.only(bottom: 10.0),
-        ),
-      ],
-    );
-  }
-}
-
-class BookingRow extends StatelessWidget {
-
-  final String day;
-  final String time;
-  final String court;
-  final Color bgColor;
-  final Color fontColor;
-
-  const BookingRow({
-    Key? key,
-    required this.day,
-    required this.time,
-    required this.court,
-    required this.bgColor,
-    required this.fontColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10,),
-      margin: const EdgeInsets.only(bottom: 10.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            day,
-            style: TextStyle(
-              color: fontColor,
-              fontSize: 14,
-              fontFamily: "Nunito",
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Text(
-            time,
-            style: TextStyle(
-              color: fontColor,
-              fontSize: 14,
-              fontFamily: "Nunito",
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Text(
-            court,
-            style: TextStyle(
-              color: fontColor,
-              fontSize: 14,
-              fontFamily: "Nunito",
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

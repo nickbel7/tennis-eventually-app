@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
-import 'package:tennis_app/widgets/search_widgets.dart';
+import 'package:tennis_app/widgets/player_widgets.dart';
+import 'package:tennis_app/widgets/inputs.dart';
 
 class SearchPage extends StatefulWidget {
 
@@ -42,7 +43,7 @@ class _SearchPageState extends State<SearchPage> {
       padding: const EdgeInsets.all(25.0),
       child: Column(
         children: <Widget>[
-          SearchWidget(
+          SearchBar(
             text: query, 
             onChanged: searchPlayer, 
             hintText: 'Search'

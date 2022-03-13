@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/bookings.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
 import 'package:tennis_app/widgets/buttons.dart';
+import 'package:tennis_app/widgets/headers.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -131,7 +131,6 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10,),
                   SimpleButton(
-                    bordercolor: Colors.transparent, 
                     fillcolor: AppTheme.colors.grassGreen, 
                     textcolor: AppTheme.colors.totallyBlack, 
                     text: "SCAN ME", 
