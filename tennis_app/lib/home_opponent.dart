@@ -9,47 +9,48 @@ class HomeOpponentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-            height: 350,
-            padding: const EdgeInsets.only(top: 30),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30, left: 20),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Request Opponent',
-                      style: TextStyle(
-                        color: AppTheme.colors.totallyBlack,
-                        fontSize: 20,
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              // height: 350,
+              padding: const EdgeInsets.only(top: 30),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Request Opponent',
+                        style: TextStyle(
+                          color: AppTheme.colors.totallyBlack,
+                          fontSize: 20,
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const DatePickerWidget(),
-                const TimePickerWidget(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: SimpleButton(
-                      bordercolor: AppTheme.colors.grassGreen,
-                      fillcolor: AppTheme.colors.grassGreen,
-                      textcolor: Colors.white,
-                      text: 'Confirm',
-                      width: 277,
-                      height: 36),
-                ),
-              ],
-            ))
-      ],
+                  const DatePickerWidget(),
+                  const TimePickerWidget(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: SimpleButton(
+                        bordercolor: AppTheme.colors.grassGreen,
+                        fillcolor: AppTheme.colors.grassGreen,
+                        textcolor: Colors.white,
+                        text: 'Confirm',
+                        width: 277,
+                        height: 36),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 }

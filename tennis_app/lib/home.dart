@@ -19,14 +19,16 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
+              toolbarHeight: 60,
+              backgroundColor: AppTheme.colors.grassGreen,
+              centerTitle: true,
               title: const Text(
                 'Tennis EveNTUAlly',
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),
               ),
-              backgroundColor: AppTheme.colors.grassGreen,
-              centerTitle: true),
+            ),
             body: const HomeBookingPage(),
           );
         },
@@ -40,14 +42,16 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
+              toolbarHeight: 60,
+              backgroundColor: AppTheme.colors.grassGreen,
+              centerTitle: true,
               title: const Text(
                 'Tennis EveNTUAlly',
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),
               ),
-              backgroundColor: AppTheme.colors.grassGreen,
-              centerTitle: true),
+            ),
             body: const HomeOpponentPage(),
           );
         }

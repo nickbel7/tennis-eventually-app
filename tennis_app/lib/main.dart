@@ -73,7 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         title: Text(
           widget.title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold
+          ),
         ),
       ),
 
