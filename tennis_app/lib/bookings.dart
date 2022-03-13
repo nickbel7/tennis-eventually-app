@@ -58,26 +58,26 @@ class SectionHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-            SizedBox(
-                width: 319,
-                height: 28,
-                child: Text(
-                    header,
-                    style: TextStyle(
-                        color: AppTheme.colors.totallyBlack,
-                        fontSize: 20,
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w700,
-                    ),
-                ),
-            ),
-            Container(
-                width: 330,
-                height: 1,
+          SizedBox(
+            width: 319,
+            height: 28,
+            child: Text(
+              header,
+              style: TextStyle(
                 color: AppTheme.colors.totallyBlack,
-                margin: const EdgeInsets.only(bottom: 10.0),
+                fontSize: 20,
+                fontFamily: "Nunito",
+                fontWeight: FontWeight.w700,
+              ),
             ),
-        ],
+        ),
+        Container(
+          width: 330,
+          height: 1,
+          color: AppTheme.colors.totallyBlack,
+          margin: const EdgeInsets.only(bottom: 10.0),
+        ),
+      ],
     );
   }
 }

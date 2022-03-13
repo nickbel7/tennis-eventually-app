@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
-import 'home_opponent.dart';
+import './home_opponent.dart';
 import './home_booking.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,31 +14,45 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   void _pushBooking() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-            title: const Text('Tennis EveNTUAlly',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            backgroundColor: AppTheme.colors.grassGreen,
-            centerTitle: true),
-        body: HomeBookingPage(),
-      );
-    }));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Tennis EveNTUAlly',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              backgroundColor: AppTheme.colors.grassGreen,
+              centerTitle: true),
+            body: const HomeBookingPage(),
+          );
+        },
+      ),
+    );
   }
 
   void _pushOpponent() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-            title: const Text('Tennis EveNTUAlly',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            backgroundColor: AppTheme.colors.grassGreen,
-            centerTitle: true),
-        body: const HomeOpponentPage(),
-      );
-    }));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Tennis EveNTUAlly',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              backgroundColor: AppTheme.colors.grassGreen,
+              centerTitle: true),
+            body: const HomeOpponentPage(),
+          );
+        }
+      )
+    );
   }
 
   @override

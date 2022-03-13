@@ -61,20 +61,20 @@ class _MyHomePageState extends State<MyHomePage> {
       // ==========> APP BAR <=================
       appBar: AppBar(
         toolbarHeight: 60,
+        centerTitle: true,
+        backgroundColor: AppTheme.colors.grassGreen,
         leading: Container(
           child: Image.asset(
             'assets/logo.png',
             fit: BoxFit.contain,
           ),
-          padding: EdgeInsets.all(5.0),
-          margin: EdgeInsets.only(left: 5.0),
+          padding: const EdgeInsets.all(5.0),
+          margin: const EdgeInsets.only(left: 5.0),
         ),
         title: Text(
           widget.title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
-        backgroundColor: AppTheme.colors.grassGreen,
       ),
 
       // ==========> BODY <=================
