@@ -31,40 +31,38 @@ class SimpleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print("Click");
-      },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            color: fillcolor,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: bordercolor),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 1,
-                blurRadius: 4,
-                offset: Offset(3, 3),
+        onTap: () {
+          print("Click");
+        },
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            child: Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                color: fillcolor,
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: bordercolor),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(3, 3),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              text, 
-              style: TextStyle(
-                color: textcolor,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+              child: Center(
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: textcolor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-            ),
-          ),
-        )
-      )
-    );
+            )));
   }
 }
 
@@ -143,35 +141,38 @@ class DateInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: onClicked,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                width: 277,
-                height: 38,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(4)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: Text(text),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: Icon(Icons.calendar_today),
-                    ),
-                  ],
-                )),
-          ],
-        ));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 25),
+      child: GestureDetector(
+          onTap: onClicked,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  width: 277,
+                  height: 38,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Text(text),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        child: Icon(Icons.calendar_today),
+                      ),
+                    ],
+                  )),
+            ],
+          )),
+    );
   }
 }
