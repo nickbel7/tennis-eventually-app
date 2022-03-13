@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
+import 'package:tennis_app/widgets/buttons.dart';
 
 class BookingRow extends StatelessWidget {
 
@@ -65,27 +66,40 @@ class BookingRow extends StatelessWidget {
   }
 }
 
-class CourtWidgetState extends StatelessWidget {
+class CourtWidgetState extends StatefulWidget {
+
   final String text;
-  final VoidCallback? onClicked;
+  // final VoidCallback? onClicked;
 
   const CourtWidgetState({
     Key? key,
     required this.text,
-    this.onClicked,
+    // this.onClicked,
   }) : super(key: key);
+
+  @override
+  State<CourtWidgetState> createState() => _CourtWidgetStateState();
+}
+
+class _CourtWidgetStateState extends State<CourtWidgetState> {
+
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClicked,
+      onTap: () {
+        setState(() {
+          selected = !selected;
+        });
+      },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Container(
-          width: 118,
+          width: 120,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppTheme.colors.greenGoblin,
+            borderRadius: BorderRadius.circular(5),
+            color: (selected ? AppTheme.colors.greenGoblin : AppTheme.colors.grassGreen),
           ),
           padding: const EdgeInsets.all(5),
           child: Row(
@@ -94,7 +108,7 @@ class CourtWidgetState extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                text,
+                widget.text,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Color(0xff001112),
@@ -155,43 +169,49 @@ class CourtCardWidget extends StatefulWidget {
 }
 
 class _CourtCardState extends State<CourtCardWidget> {
+  
   bool selected = false;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 5),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: 316,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  selected = !selected;
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(AppTheme.colors.amazonGreen),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                selected = !selected;
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              height: 30,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppTheme.colors.amazonGreen,
               ),
               child: Text(
                 '13:00-14:00',
-                style: TextStyle(color: AppTheme.colors.sandStorm),
+                style: TextStyle(
+                  color: AppTheme.colors.sandStorm,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
           Visibility(
             visible: selected,
             child: Container(
-              margin: const EdgeInsets.only(bottom: 5),
-              width: 316,
-              height: 36,
+              height: 40,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8), 
+                  bottomRight: Radius.circular(8)),
                 color: AppTheme.colors.sandStorm,
               ),
               child: Row(

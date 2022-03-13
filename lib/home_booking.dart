@@ -13,9 +13,12 @@ class HomeBookingPage extends StatefulWidget {
 }
 
 class _HomeBookingPageState extends State<HomeBookingPage> {
+  
   void _popBooking() {
     Navigator.pop(context);
   }
+
+  bool selectedCourt = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
         children: [
           const DatePickerWidget(),
           const SizedBox(height: 10),
-          Text('Request Component',
+          Text('Available Slots',
               style: TextStyle(
                 color: AppTheme.colors.totallyBlack,
                 fontSize: 20,
@@ -47,17 +50,15 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
               ],
             ),
           ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SimpleButton(
-                fillcolor: AppTheme.colors.grassGreen,
-                textcolor: AppTheme.colors.sandStorm,
-                text: 'BOOK COURT',
-                width: 204,
-                height: 36,
-                onClick: _popBooking,
-              ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SimpleButton(
+              fillcolor: (selectedCourt ? AppTheme.colors.amazonGreen : AppTheme.colors.grassGreen),
+              textcolor: AppTheme.colors.sandStorm,
+              text: 'BOOK COURT',
+              width: 204,
+              height: 36,
+              onClick: _popBooking,
             ),
           ),
         ],
