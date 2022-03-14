@@ -17,7 +17,18 @@ class ProfilePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 25,),
+          SizedBox(
+            height: 25,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+
+                },
+                child: const Icon(Icons.edit),
+              ),
+            ),
+          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
