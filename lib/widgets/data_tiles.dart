@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
-import 'package:tennis_app/widgets/buttons.dart';
+// import 'package:tennis_app/widgets/buttons.dart';
 
 class BookingRow extends StatelessWidget {
 
@@ -69,12 +69,16 @@ class BookingRow extends StatelessWidget {
 class CourtWidgetState extends StatefulWidget {
 
   final String text;
-  // final VoidCallback? onClicked;
+
+  // FUNCTION CALLBACK
+  // alternative : CallBackFunction (widget)
+  // source : https://medium.com/@avnishnishad/flutter-working-with-callbacks-1d5e5f5d9c5a
+  final Function(bool state)? notifyParent;  // state : 1(selected), 0(unselected)
 
   const CourtWidgetState({
     Key? key,
     required this.text,
-    // this.onClicked,
+    this.notifyParent,
   }) : super(key: key);
 
   @override
@@ -92,6 +96,7 @@ class _CourtWidgetStateState extends State<CourtWidgetState> {
         setState(() {
           selected = !selected;
         });
+        widget.notifyParent!((selected ? true : false));
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -110,8 +115,8 @@ class _CourtWidgetStateState extends State<CourtWidgetState> {
               Text(
                 widget.text,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xff001112),
+                style: TextStyle(
+                  color: AppTheme.colors.totallyBlack,
                   fontSize: 12,
                 ),
               ),
@@ -123,6 +128,7 @@ class _CourtWidgetStateState extends State<CourtWidgetState> {
   }
 }
 
+// !! DEPRICATED
 class HourSlotWidgetState extends StatelessWidget {
   final String text;
 
@@ -162,7 +168,13 @@ class HourSlotWidgetState extends StatelessWidget {
 }
 
 class CourtCardWidget extends StatefulWidget {
-  const CourtCardWidget({Key? key}) : super(key: key);
+
+  final Function(bool state)? notifyParent;  // state : 1(selected), 0(unselected)
+
+  const CourtCardWidget({
+    Key? key,
+    this.notifyParent,
+  }) : super(key: key);
 
   @override
   _CourtCardState createState() => _CourtCardState();
@@ -171,6 +183,12 @@ class CourtCardWidget extends StatefulWidget {
 class _CourtCardState extends State<CourtCardWidget> {
   
   bool selected = false;
+
+  tappedCourt(selectedCourt) {
+    print("success");
+    print(selectedCourt);
+    widget.notifyParent!((selectedCourt ? true : false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -216,12 +234,14 @@ class _CourtCardState extends State<CourtCardWidget> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
+                children: [
                   CourtWidgetState(
                     text: 'Court 1',
+                    notifyParent: tappedCourt,
                   ),
                   CourtWidgetState(
                     text: 'Court 2',
+                    notifyParent: tappedCourt
                   )
                 ],
               ),

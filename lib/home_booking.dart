@@ -20,6 +20,12 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
 
   bool selectedCourt = false;
 
+  tappedCourt(isSelected) {
+    setState(() {
+      (isSelected ? selectedCourt = true : selectedCourt = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,8 +46,10 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
           const SizedBox(height: 5),
           Expanded(
             child: ListView(
-              children: const <Widget>[
-                CourtCardWidget(),
+              children: <Widget>[
+                CourtCardWidget(
+                  notifyParent: tappedCourt,
+                ),
                 CourtCardWidget(),
                 CourtCardWidget(),
                 CourtCardWidget(),
