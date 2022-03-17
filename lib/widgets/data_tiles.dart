@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
-// import 'package:tennis_app/widgets/buttons.dart';
 
+// DEPRICATED
 class BookingRow extends StatelessWidget {
 
   final String day;
@@ -68,17 +68,16 @@ class BookingRow extends StatelessWidget {
 
 class CourtWidgetState extends StatefulWidget {
 
-  final String text;
-
   // FUNCTION CALLBACK
   // alternative : CallBackFunction (widget)
   // source : https://medium.com/@avnishnishad/flutter-working-with-callbacks-1d5e5f5d9c5a
-  final Function(bool state)? notifyParent;  // state : 1(selected), 0(unselected)
+  final Function(Court courtState)? notifyParent;  // state : 1(selected), 0(unselected)
+  final Court court;
 
   const CourtWidgetState({
     Key? key,
-    required this.text,
     this.notifyParent,
+    required this.court,
   }) : super(key: key);
 
   @override
@@ -87,41 +86,36 @@ class CourtWidgetState extends StatefulWidget {
 
 class _CourtWidgetStateState extends State<CourtWidgetState> {
 
-  bool selected = false;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selected = !selected;
+          widget.court.selected = !widget.court.selected;
         });
-        widget.notifyParent!((selected ? true : false));
+        widget.notifyParent!(widget.court);
       },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Container(
-          width: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: (selected ? AppTheme.colors.greenGoblin : AppTheme.colors.grassGreen),
-          ),
-          padding: const EdgeInsets.all(5),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                widget.text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppTheme.colors.totallyBlack,
-                  fontSize: 12,
-                ),
+      child: Container(
+        width: 120,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: (widget.court.selected ? AppTheme.colors.greenGoblin : AppTheme.colors.grassGreen),
+        ),
+        padding: const EdgeInsets.all(5),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              widget.court.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.colors.totallyBlack,
+                fontSize: 12,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -169,11 +163,15 @@ class HourSlotWidgetState extends StatelessWidget {
 
 class CourtCardWidget extends StatefulWidget {
 
-  final Function(bool state)? notifyParent;  // state : 1(selected), 0(unselected)
+  final Function(CourtSlot courtSlotState, int idx)? notifyParent;  // state : 1(selected), 0(unselected)
+  final CourtSlot currentSlot;
+  final int slotIndex;
 
   const CourtCardWidget({
     Key? key,
     this.notifyParent,
+    required this.currentSlot,
+    required this.slotIndex,
   }) : super(key: key);
 
   @override
@@ -182,27 +180,68 @@ class CourtCardWidget extends StatefulWidget {
 
 class _CourtCardState extends State<CourtCardWidget> {
   
-  bool selected = false;
+  bool _selected = false;
 
-  tappedCourt(selectedCourt) {
-    print("success");
-    print(selectedCourt);
-    widget.notifyParent!((selectedCourt ? true : false));
+  void _tappedCourt(selectedCourt) {
+    // widget.notifyParent!((selectedCourt ? true : false));
+    
+
+    if (selectedCourt.title == 'Court 1') {
+      widget.currentSlot.court2.selected = false;
+      widget.currentSlot.court1 = selectedCourt;
+    }
+    else {
+      widget.currentSlot.court1.selected = false;
+      widget.currentSlot.court2 = selectedCourt;
+    }
+
+    // (widget.currentSlot.court1.selected ? print('court 1 check') : null);
+    // (widget.currentSlot.court2.selected ? print('court 2 check') : null);
+    widget.notifyParent!(widget.currentSlot, widget.slotIndex);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 5),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
+          Visibility(
+            visible: _selected,
+            child: Container(
+              height: 70,
+              padding: const EdgeInsets.only(top: 30),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8), 
+                  bottomRight: Radius.circular(8)),
+                color: AppTheme.colors.sandStorm,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Visibility(
+                    visible: widget.currentSlot.court1.available,
+                    child: CourtWidgetState(
+                      notifyParent: _tappedCourt,
+                      court: widget.currentSlot.court1,
+                    ),
+                  ),
+                  Visibility(
+                    visible: widget.currentSlot.court2.available,
+                    child: CourtWidgetState(
+                      notifyParent: _tappedCourt,
+                      court: widget.currentSlot.court2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           GestureDetector(
             onTap: () {
               setState(() {
-                selected = !selected;
+                _selected = !_selected;
               });
             },
             child: Container(
@@ -214,7 +253,7 @@ class _CourtCardState extends State<CourtCardWidget> {
                 color: AppTheme.colors.amazonGreen,
               ),
               child: Text(
-                '13:00-14:00',
+                widget.currentSlot.timeSlot,
                 style: TextStyle(
                   color: AppTheme.colors.sandStorm,
                   fontSize: 14,
@@ -222,33 +261,35 @@ class _CourtCardState extends State<CourtCardWidget> {
               ),
             ),
           ),
-          Visibility(
-            visible: selected,
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(8), 
-                  bottomRight: Radius.circular(8)),
-                color: AppTheme.colors.sandStorm,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CourtWidgetState(
-                    text: 'Court 1',
-                    notifyParent: tappedCourt,
-                  ),
-                  CourtWidgetState(
-                    text: 'Court 2',
-                    notifyParent: tappedCourt
-                  )
-                ],
-              ),
-            ),
-          ),
+          
         ],
       ),
     );
   }
+}
+
+class Court{
+  String title;
+  bool available;
+  bool selected;
+
+  Court({
+    required this.title,
+    required this.available,
+    required this.selected,
+  });
+}
+
+class CourtSlot{
+  String timeSlot;
+  Court court1;
+  Court court2;
+  int? selectedCourt;
+
+  CourtSlot({
+    required this.timeSlot,
+    required this.court1,
+    required this.court2,
+    this.selectedCourt,
+  });
 }

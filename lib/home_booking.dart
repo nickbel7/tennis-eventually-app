@@ -6,25 +6,106 @@ import 'package:tennis_app/widgets/inputs.dart';
 import 'package:tennis_app/widgets/data_tiles.dart';
 
 class HomeBookingPage extends StatefulWidget {
-  const HomeBookingPage({Key? key}) : super(key: key);
+
+  const HomeBookingPage({
+    Key? key, 
+    List<CourtCardWidget>? courtSlots
+  }) : super(key: key);
 
   @override
   State<HomeBookingPage> createState() => _HomeBookingPageState();
 }
 
 class _HomeBookingPageState extends State<HomeBookingPage> {
+
+  final _courtSlots = <CourtSlot>[
+    CourtSlot(
+      timeSlot: '13:00-14:00',
+      court1: Court(
+        available: true,
+        selected: false,
+        title: 'Court 1'
+      ), 
+      court2: Court(
+        available: true,
+        selected: false,
+        title: 'Court 2'
+      ), 
+    ),
+    CourtSlot(
+      timeSlot: '15:00-16:00',
+      court1: Court(
+        available: true,
+        selected: false,
+        title: 'Court 1'
+      ), 
+      court2: Court(
+        available: true,
+        selected: false,
+        title: 'Court 2'
+      ), 
+    ),
+  ];
   
+  bool existsSelectedCourt = false;
+  CourtSlot? selectedCourtSlot;
+
   void _popBooking() {
-    Navigator.pop(context);
+    if (existsSelectedCourt) {
+      Navigator.pop(context);
+    }
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Nice ! Your court is booked'),
+        action: SnackBarAction(
+          label: 'OK', 
+          onPressed: () {},
+        ),
+      ),
+    );
+
   }
 
-  bool selectedCourt = false;
+  void _tappedCourt(slotInstance, idx) {  // idx is not really needed, flutter uses the same instance of CourtSlot
 
-  tappedCourt(isSelected) {
     setState(() {
-      (isSelected ? selectedCourt = true : selectedCourt = false);
+
+      if (existsSelectedCourt && selectedCourtSlot != slotInstance) {
+        selectedCourtSlot!.court1.selected = false;
+        selectedCourtSlot!.court2.selected = false;
+      }
+
+      // _courtSlots[idx] = slotInstance;
+      existsSelectedCourt = (slotInstance.court1.selected || slotInstance.court2.selected ? true : false);
+      selectedCourtSlot = (existsSelectedCourt ? slotInstance : null);
+
     });
+
   }
+
+  Widget _buildCourtSlots() {
+    return ListView.builder(
+      itemCount: _courtSlots.length,
+      itemBuilder: (context, index) {
+        return CourtCardWidget(
+          notifyParent: _tappedCourt,
+          currentSlot: _courtSlots[index],
+          slotIndex: index,
+        );
+      },
+    );
+  }
+
+  // DEPRICATED
+  // _courtCardBuilder() {
+  //   return List.generate(
+  //     3, 
+  //     (index) => CourtCardWidget(
+  //       notifyParent: tappedCourt,
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +116,6 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const DatePickerWidget(),
-          const SizedBox(height: 10),
           Text('Available Slots',
               style: TextStyle(
                 color: AppTheme.colors.totallyBlack,
@@ -45,23 +125,35 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
               )),
           const SizedBox(height: 5),
           Expanded(
-            child: ListView(
-              children: <Widget>[
-                CourtCardWidget(
-                  notifyParent: tappedCourt,
-                ),
-                CourtCardWidget(),
-                CourtCardWidget(),
-                CourtCardWidget(),
-                CourtCardWidget(),
-                CourtCardWidget(),
-              ],
-            ),
+            child: _buildCourtSlots(),
+            // child: ListView(
+              // children: _courtCardBuilder(),
+              // children: <Widget>[
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              //   CourtCardWidget(
+              //     notifyParent: tappedCourt,
+              //   ),
+              // ],
+            // ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: SimpleButton(
-              fillcolor: (selectedCourt ? AppTheme.colors.amazonGreen : AppTheme.colors.grassGreen),
+              fillcolor: (existsSelectedCourt ? AppTheme.colors.amazonGreen : AppTheme.colors.grassGreen),
               textcolor: AppTheme.colors.sandStorm,
               text: 'BOOK COURT',
               width: 204,
