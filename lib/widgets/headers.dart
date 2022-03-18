@@ -15,10 +15,9 @@ class SectionHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
-          width: 319,
           height: 28,
           child: Text(
             header,
@@ -31,7 +30,6 @@ class SectionHeader extends StatelessWidget {
           ),
         ),
         Container(
-          width: 330,
           height: 1,
           color: AppTheme.colors.totallyBlack,
           margin: const EdgeInsets.only(bottom: 10.0),
