@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:intl/intl.dart';
+import 'package:tennis_app/models/user.dart';
 
-// 
+//
 //////////// DATETIME FIELDS
 //=======================================================
 class DateInputWidget extends StatelessWidget {
@@ -79,10 +80,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) => DateInputWidget(
-    title: 'Date',
-    text: getText(),
-    onClicked: () => pickDate(context),
-  );
+        title: 'Date',
+        text: getText(),
+        onClicked: () => pickDate(context),
+      );
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.now();
@@ -140,10 +141,9 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
   }
 }
 
-
-// 
+//
 //////////// SEARCH FIELDS
-//======================================================= 
+//=======================================================
 class SearchBar extends StatefulWidget {
   final String text;
   final ValueChanged<String> onChanged;
@@ -161,22 +161,26 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-
   final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final styleActive = TextStyle(color: AppTheme.colors.totallyBlack);
-    const styleHint = TextStyle(color: Color(0xFF6C6C6C),
-                    // fontSize: 14,
-                    fontFamily: "Nunito",
-                    fontWeight: FontWeight.w700,);
+    const styleHint = TextStyle(
+      color: Color(0xFF6C6C6C),
+      // fontSize: 14,
+      fontFamily: "Nunito",
+      fontWeight: FontWeight.w700,
+    );
     final style = widget.text.isEmpty ? styleHint : styleActive;
 
     return Container(
       height: 40,
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0,),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 0,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
@@ -191,19 +195,70 @@ class _SearchBarState extends State<SearchBar> {
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           suffixIcon: widget.text.isNotEmpty
-            ? GestureDetector(
-                child: Icon(Icons.close, color: style.color),
-                onTap: () {
-                  controller.clear();
-                  widget.onChanged('');
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-              )
-            : null,
+              ? GestureDetector(
+                  child: Icon(Icons.close, color: style.color),
+                  onTap: () {
+                    controller.clear();
+                    widget.onChanged('');
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                )
+              : null,
           hintText: widget.hintText,
           hintStyle: style,
           border: InputBorder.none,
           icon: Icon(Icons.search, color: style.color),
+        ),
+      ),
+    );
+  }
+}
+
+//
+//////////// TEXT INPUT FIELDS
+//=======================================================
+class InputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final User user;
+
+  const InputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.user,
+  });
+
+  @override
+  State<InputField> createState() => _InputFieldState();
+}
+
+class _InputFieldState extends State<InputField> {
+  final surNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    surNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          widget.user.firstName = surNameController.text;
+        },
+        controller: surNameController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
         ),
       ),
     );
