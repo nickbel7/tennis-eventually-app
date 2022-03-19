@@ -6,6 +6,7 @@ import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/headers.dart';
 import 'package:tennis_app/profile_edit.dart';
 import 'package:tennis_app/models/user.dart';
+import 'package:tennis_app/widgets/inputs.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -15,16 +16,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final User user = User(
+  late User user = User(
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       phone: faker.phoneNumber.us(),
-      bio: 'Hi! I am highly interested in playing tennis',
       email: faker.internet.email());
 
-  void _pushEditPage() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
+  late SocialMedia social = SocialMedia(
+      facebookLink: 'www.facebook.com',
+      instagramLink: 'www.instagram.com',
+      viberLink: 'www.viber.com');
+
+  void _pushEditPage(BuildContext context) async {
+    var result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Scaffold(
         appBar: AppBar(
           toolbarHeight: 60,
@@ -38,10 +43,19 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }));
+    setState(() {
+      user = result;
+    });
+
+    // ScaffoldMessenger.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text(user.firstName)));
   }
 
   Widget _addSocialLinks(BuildContext context) {
-    return const AlertDialog();
+    return Hero(
+      social: social,
+    );
   }
 
   @override
@@ -58,7 +72,9 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: _pushEditPage,
+                onTap: () {
+                  _pushEditPage(context);
+                },
                 child: const Icon(Icons.edit),
               ),
             ),
@@ -90,12 +106,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     // decoration: BoxDecoration(
                     //   border: Border.all(color: const Color(0xFFFF0000)),
                     // ),
+
                     child: ProfileInfoContainer(
                       user: user,
-                      // firstName: user.firstName,
-                      // lastName: user.lastName,
-                      // phone: user.phone,
-                      // email: user.email,
                     )),
               ),
             ],
@@ -114,14 +127,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icon(FontAwesomeIcons.whatsapp,
                       color: AppTheme.colors.totallyBlack, size: 30.0),
                   onPressed: () async {
-                    const url = '';
+                    var url = social.viberLink;
                   }),
               const SizedBox(width: 25),
               IconButton(
                 icon: Icon(FontAwesomeIcons.instagram,
                     color: AppTheme.colors.totallyBlack, size: 30.0),
                 onPressed: () {
-                  const url = '';
+                  var url = social.instagramLink;
                 },
               ),
               const SizedBox(width: 25),
@@ -129,15 +142,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: Icon(FontAwesomeIcons.facebookF,
                     color: AppTheme.colors.totallyBlack, size: 25.0),
                 onPressed: () {
-                  const url = '';
+                  var url = social.facebookLink;
                 },
               ),
               const SizedBox(width: 5),
               IconButton(
                 icon: Icon(Icons.add_circle_outline_rounded,
-                    color: AppTheme.colors.totallyBlack, size: 25.0),
-                onPressed: () {
-                  showDialog(
+                    color: AppTheme.colors.totallyBlack, size: 30.0),
+                onPressed: () async {
+                  final SocialMedia = await showDialog(
                     context: context,
                     builder: (BuildContext context) => _addSocialLinks(context),
                   );
@@ -222,20 +235,76 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+class Hero extends StatefulWidget {
+  final SocialMedia social;
+
+  const Hero({
+    required this.social,
+  });
+  @override
+  State<Hero> createState() => _HeroState();
+}
+
+class _HeroState extends State<Hero> {
+  void _popSubmit(BuildContext context) async {
+    Navigator.pop(context, widget.social);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Nice! Your social media links changed'),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {},
+      ),
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit'),
+      content: SizedBox(
+        height: 200,
+        child: Column(
+          children: [
+            FbSocialInputField(
+              labeltext: "Facebook Link",
+              social: widget.social,
+            ),
+            IgSocialInputField(
+              labeltext: "Instagram Link",
+              social: widget.social,
+            ),
+            VbSocialInputField(
+              labeltext: "What's up Link",
+              social: widget.social,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Center(
+          child: SimpleButton(
+            fillcolor: AppTheme.colors.amazonGreen,
+            textcolor: AppTheme.colors.totallyWhite,
+            text: "ADD",
+            width: 130,
+            height: 27,
+            onClick: () {
+              _popSubmit(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class ProfileInfoContainer extends StatefulWidget {
-  // final String firstName;
-  // final String lastName;
-  // final String? phone;
-  // final String? email;
   final User user;
 
   const ProfileInfoContainer({
     Key? key,
     required this.user,
-    // required this.firstName,
-    // required this.lastName,
-    // this.phone,
-    // this.email,
   }) : super(key: key);
 
   @override

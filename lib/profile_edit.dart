@@ -21,90 +21,100 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   double? _ratingValue;
 
   void _pushProfile() {
-    setState(() {
-      User user2 = new User(
-          firstName: widget.user.firstName,
-          lastName: widget.user.lastName,
-          phone: widget.user.phone,
-          email: widget.user.email,
-          bio: 'alal');
-    });
+    User user2 = User(
+      firstName: widget.user.firstName,
+      lastName: widget.user.lastName,
+      phone: widget.user.phone,
+      email: widget.user.email,
+      ratingvalue: _ratingValue,
+    );
+
+    Navigator.pop(context, user2);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Nice! Your profile changed'),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 25,
+    return ListView(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 25,
+      ),
+      children: [
+        const SizedBox(
+          height: 25,
         ),
-        children: [
-          const SizedBox(
-            height: 25,
-          ),
-          InputField(
-            user: widget.user,
-            labeltext: 'Name',
-            hinttext: widget.user.firstName,
-          ),
-          InputField(
-            user: widget.user,
-            labeltext: 'Lastname',
-            hinttext: widget.user.lastName,
-          ),
-          InputField(
-            user: widget.user,
-            labeltext: 'Phone',
-            hinttext: widget.user.phone,
-          ),
-          InputField(
-            user: widget.user,
-            labeltext: 'Εmail',
-            hinttext: widget.user.email,
-          ),
-          const SectionHeader(header: 'Level'),
-          RatingBar(
-              initialRating: 0,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 6,
-              ratingWidget: RatingWidget(
-                  full: Icon(Icons.star, color: AppTheme.colors.totallyBlack),
-                  half: Icon(
-                    Icons.star_half,
-                    color: AppTheme.colors.totallyBlack,
-                  ),
-                  empty: Icon(
-                    Icons.star_outline,
-                    color: AppTheme.colors.totallyBlack,
-                  )),
-              onRatingUpdate: (value) {
-                setState(() {
-                  _ratingValue = value;
-                });
-              }),
-          SizedBox(
-            height: 150,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-              child: Image.asset(
-                "assets/avatar.png",
-              ),
+        InputField(
+          user: widget.user,
+          labeltext: 'Name',
+          hinttext: widget.user.firstName,
+        ),
+        SurnameInputField(
+          user: widget.user,
+          labeltext: 'Lastname',
+          hinttext: widget.user.lastName,
+        ),
+        PhoneInputField(
+          user: widget.user,
+          labeltext: 'Phone',
+          hinttext: widget.user.phone,
+        ),
+        EmailInputField(
+          user: widget.user,
+          labeltext: 'Εmail',
+          hinttext: widget.user.email,
+        ),
+        const SectionHeader(header: 'Level'),
+        RatingBar(
+            initialRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 6,
+            ratingWidget: RatingWidget(
+                full: Icon(Icons.star, color: AppTheme.colors.totallyBlack),
+                half: Icon(
+                  Icons.star_half,
+                  color: AppTheme.colors.totallyBlack,
+                ),
+                empty: Icon(
+                  Icons.star_outline,
+                  color: AppTheme.colors.totallyBlack,
+                )),
+            onRatingUpdate: (value) {
+              setState(() {
+                _ratingValue = value;
+                print(_ratingValue);
+              });
+            }),
+        SizedBox(
+          height: 150,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
+            child: Image.asset(
+              "assets/avatar.png",
             ),
           ),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: SimpleButton(
-                fillcolor: AppTheme.colors.grassGreen,
-                textcolor: AppTheme.colors.totallyBlack,
-                text: 'SAVE',
-                width: 204,
-                height: 36,
-                onClick: _pushProfile,
-              ))
-        ],
-      ),
+        ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: SimpleButton(
+              fillcolor: AppTheme.colors.grassGreen,
+              textcolor: AppTheme.colors.totallyBlack,
+              text: 'SAVE',
+              width: 204,
+              height: 36,
+              onClick: _pushProfile,
+            ))
+      ],
     );
   }
 }

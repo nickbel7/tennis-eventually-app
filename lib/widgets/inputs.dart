@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:tennis_app/models/user.dart';
+import 'package:tennis_app/profile.dart';
 
 //
 //////////// DATETIME FIELDS
@@ -92,6 +93,13 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       initialDate: date, //date ?? initialDate
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
+      // builder: (context, child) => Theme(
+      //   data: ThemeData().copyWith(
+      //     colorScheme: ,
+      //   ),
+      //   child: child,
+
+      // )
     );
 
     if (newDate == null) return;
@@ -248,7 +256,9 @@ class _InputFieldState extends State<InputField> {
       padding: const EdgeInsets.only(bottom: 15),
       child: TextField(
         onChanged: (text) {
-          widget.user.firstName = surNameController.text;
+          setState(() {
+            widget.user.firstName = surNameController.text;
+          });
         },
         controller: surNameController,
         keyboardType: TextInputType.name,
@@ -259,6 +269,299 @@ class _InputFieldState extends State<InputField> {
           border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SurnameInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final User user;
+
+  const SurnameInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.user,
+  });
+
+  @override
+  State<SurnameInputField> createState() => _SurnameInputFieldState();
+}
+
+class _SurnameInputFieldState extends State<SurnameInputField> {
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            widget.user.lastName = textController.text;
+          });
+        },
+        controller: textController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PhoneInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final User user;
+
+  const PhoneInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.user,
+  });
+
+  @override
+  State<PhoneInputField> createState() => _PhoneInputFieldState();
+}
+
+class _PhoneInputFieldState extends State<PhoneInputField> {
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            widget.user.phone = textController.text;
+          });
+        },
+        controller: textController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EmailInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final User user;
+
+  const EmailInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.user,
+  });
+
+  @override
+  State<EmailInputField> createState() => _EmailInputFieldState();
+}
+
+class _EmailInputFieldState extends State<EmailInputField> {
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            widget.user.email = textController.text;
+          });
+        },
+        controller: textController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FbSocialInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final SocialMedia social;
+
+  const FbSocialInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.social,
+  });
+
+  @override
+  State<FbSocialInputField> createState() => _FbSocialInputFieldState();
+}
+
+class _FbSocialInputFieldState extends State<FbSocialInputField> {
+  final Controller = TextEditingController();
+  late bool changed = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    Controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            changed = true;
+            widget.social.facebookLink = Controller.text;
+          });
+        },
+        controller: Controller,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+        ),
+      ),
+    );
+  }
+}
+
+class IgSocialInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final SocialMedia social;
+
+  const IgSocialInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.social,
+  });
+
+  @override
+  State<IgSocialInputField> createState() => _IgSocialInputFieldState();
+}
+
+class _IgSocialInputFieldState extends State<IgSocialInputField> {
+  final Controller = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    Controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            widget.social.instagramLink = Controller.text;
+          });
+        },
+        controller: Controller,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
+        ),
+      ),
+    );
+  }
+}
+
+class VbSocialInputField extends StatefulWidget {
+  final String? hinttext;
+  final String labeltext;
+  final SocialMedia social;
+
+  const VbSocialInputField({
+    this.hinttext,
+    required this.labeltext,
+    required this.social,
+  });
+
+  @override
+  State<VbSocialInputField> createState() => _VbSocialInputFieldState();
+}
+
+class _VbSocialInputFieldState extends State<VbSocialInputField> {
+  final Controller = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    Controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        onChanged: (text) {
+          setState(() {
+            widget.social.viberLink = Controller.text;
+          });
+        },
+        controller: Controller,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          hintText: widget.hinttext,
+          labelText: widget.labeltext,
         ),
       ),
     );
