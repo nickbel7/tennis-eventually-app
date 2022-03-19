@@ -3,14 +3,14 @@ class User {
   String lastName;
   String phone;
   String email;
-  double? ratingvalue;
+  double ratingvalue;
 
   User({
     required this.firstName,
     required this.lastName,
     required this.email,
     required this.phone,
-    this.ratingvalue,
+    required this.ratingvalue,
   });
 }
 

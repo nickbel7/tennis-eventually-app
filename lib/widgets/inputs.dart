@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:tennis_app/models/user.dart';
-import 'package:tennis_app/profile.dart';
 
 //
 //////////// DATETIME FIELDS
@@ -93,15 +92,17 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       initialDate: date, //date ?? initialDate
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
-      // builder: (context, child) => Theme(
-      //   data: ThemeData().copyWith(
-      //     colorScheme: ,
-      //   ),
-      //   child: child,
-
-      // )
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppTheme.colors.grassGreen,
+            ),
+          ), // This will change to light theme.
+          child: child!,
+        );
+      },
     );
-
     if (newDate == null) return;
 
     setState(() => date = newDate);
@@ -141,6 +142,16 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
     final newTime = await showTimePicker(
       context: context,
       initialTime: time,
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppTheme.colors.grassGreen,
+            ),
+          ), // This will change to light theme.
+          child: child!,
+        );
+      },
     );
 
     if (newTime == null) return;

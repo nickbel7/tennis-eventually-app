@@ -18,7 +18,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
-  double? _ratingValue;
+  double _ratingValue = 0;
 
   void _pushProfile() {
     User user2 = User(
@@ -80,7 +80,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             allowHalfRating: true,
             itemCount: 6,
             ratingWidget: RatingWidget(
-                full: Icon(Icons.star, color: AppTheme.colors.totallyBlack),
+                full: Icon(
+                  Icons.star,
+                  color: AppTheme.colors.totallyBlack,
+                ),
                 half: Icon(
                   Icons.star_half,
                   color: AppTheme.colors.totallyBlack,
@@ -92,7 +95,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             onRatingUpdate: (value) {
               setState(() {
                 _ratingValue = value;
-                print(_ratingValue);
               });
             }),
         SizedBox(

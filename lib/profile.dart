@@ -9,7 +9,12 @@ import 'package:tennis_app/models/user.dart';
 import 'package:tennis_app/widgets/inputs.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  // final bool isEditable;
+
+  const ProfilePage({
+    // required this.isEditable,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -20,7 +25,8 @@ class _ProfilePageState extends State<ProfilePage> {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       phone: faker.phoneNumber.us(),
-      email: faker.internet.email());
+      email: faker.internet.email(),
+      ratingvalue: 3);
 
   late SocialMedia social = SocialMedia(
       facebookLink: 'www.facebook.com',
@@ -60,6 +66,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _stars = List.generate(
+      user.ratingvalue.toInt(),
+      (index) => Icon(
+        Icons.star,
+        color: AppTheme.colors.totallyBlack,
+        size: 26,
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
       child: Column(
@@ -75,6 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 onTap: () {
                   _pushEditPage(context);
                 },
+                //////profile edit page
+
                 child: const Icon(Icons.edit),
               ),
             ),
@@ -103,10 +119,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Container(
                     // height: 150,
                     margin: const EdgeInsets.only(left: 10),
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(color: const Color(0xFFFF0000)),
-                    // ),
-
                     child: ProfileInfoContainer(
                       user: user,
                     )),
@@ -126,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
               IconButton(
                   icon: Icon(FontAwesomeIcons.whatsapp,
                       color: AppTheme.colors.totallyBlack, size: 30.0),
-                  onPressed: () async {
+                  onPressed: () {
                     var url = social.viberLink;
                   }),
               const SizedBox(width: 25),
@@ -146,6 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               const SizedBox(width: 5),
+              //////////////Only to profile edit
               IconButton(
                 icon: Icon(Icons.add_circle_outline_rounded,
                     color: AppTheme.colors.totallyBlack, size: 30.0),
@@ -168,32 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                ],
+                children: _stars,
               ),
             ],
           ),
