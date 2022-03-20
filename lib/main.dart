@@ -49,7 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
     const HomePage(),
     const BookingsPage(),
     const SearchPage(),
-    const ProfilePage(),
+    const ProfilePage(
+      isEditable: true,
+    ),
   ];
 
   @override

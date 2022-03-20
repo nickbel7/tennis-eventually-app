@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
@@ -9,12 +10,13 @@ import 'package:tennis_app/models/user.dart';
 import 'package:tennis_app/widgets/inputs.dart';
 
 class ProfilePage extends StatefulWidget {
-  // final bool isEditable;
+  final bool isEditable;
+  final String? firstName;
+  final String? lastName;
 
-  const ProfilePage({
-    // required this.isEditable,
-    Key? key,
-  }) : super(key: key);
+  const ProfilePage(
+      {Key? key, required this.isEditable, this.firstName, this.lastName})
+      : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -22,8 +24,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late User user = User(
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
+      firstName: widget.firstName ?? faker.person.firstName(),
+      lastName: widget.lastName ?? faker.person.lastName(),
       phone: faker.phoneNumber.us(),
       email: faker.internet.email(),
       ratingvalue: 3);
@@ -58,6 +60,34 @@ class _ProfilePageState extends State<ProfilePage> {
     //   ..showSnackBar(SnackBar(content: Text(user.firstName)));
   }
 
+  Widget _buildEditPage() {
+    if (widget.isEditable) {
+      return GestureDetector(
+        onTap: () {
+          _pushEditPage(context);
+        },
+        child: const Icon(Icons.edit),
+      );
+    }
+    return Container();
+  }
+
+  Widget _buildEditPageSocial() {
+    if (widget.isEditable) {
+      IconButton(
+        icon: Icon(Icons.add_circle_outline_rounded,
+            color: AppTheme.colors.totallyBlack, size: 30.0),
+        onPressed: () async {
+          final SocialMedia = await showDialog(
+            context: context,
+            builder: (BuildContext context) => _addSocialLinks(context),
+          );
+        },
+      );
+    }
+    return Container();
+  }
+
   Widget _addSocialLinks(BuildContext context) {
     return Hero(
       social: social,
@@ -85,14 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 25,
             child: Align(
               alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  _pushEditPage(context);
-                },
-                //////profile edit page
-
-                child: const Icon(Icons.edit),
-              ),
+              child: _buildEditPage(),
             ),
           ),
           Row(
@@ -158,17 +181,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               const SizedBox(width: 5),
-              //////////////Only to profile edit
+              // _buildEditPageSocial(),
               IconButton(
-                icon: Icon(Icons.add_circle_outline_rounded,
-                    color: AppTheme.colors.totallyBlack, size: 30.0),
-                onPressed: () async {
-                  final SocialMedia = await showDialog(
-                    context: context,
-                    builder: (BuildContext context) => _addSocialLinks(context),
-                  );
-                },
-              ),
+                  icon: Icon(Icons.add_circle_outline_rounded,
+                      color: AppTheme.colors.totallyBlack, size: 30.0),
+                  onPressed: () async {
+                    final SocialMedia = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _addSocialLinks(context),
+                    );
+                  }),
             ],
           ),
           const SizedBox(
