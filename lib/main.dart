@@ -44,26 +44,28 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
 
-      // _pages = <Widget>[
-      //   HomePage(
-      //     notifyParent: _addedBooking,
-      //   ),
-      //   BookingsPage(
-      //     newBooking: _newBooking,
-      //   ),
-      //   const SearchPage(),
-      //   const ProfilePage(),
-      // ];
       _pages[1] = BookingsPage(
-        newBooking: _newBooking,
+        // newBooking: _newBooking,
+        bookings: _bookings,
       );
     });
   }
 
+  final _bookings = List.generate(
+    15, 
+    (index) => Booking(
+      // DateTime.parse('2020-01-02 03:04:05');
+      dateTime: DateTime.parse('2022-03-20 03:04:00'),
+      day: '19/03/2022', 
+      hour: '18:00-19:00', 
+      court: 'Court 1'),
+  );
+
   Booking? _newBooking;
   void _addedBooking(Booking newBooking) {
     _newBooking = newBooking;
-    print('Added Successfully');
+
+    _bookings.add(newBooking);
   }
 
   // List<Widget> _pages() {
@@ -89,7 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
         notifyParent: _addedBooking,
       ),
       BookingsPage(
-        newBooking: _newBooking,
+        // newBooking: _newBooking,
+        bookings: _bookings,
       ),
       const SearchPage(),
       const ProfilePage(

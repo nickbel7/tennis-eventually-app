@@ -31,6 +31,26 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
       court1: Court(available: true, selected: false, title: 'Court 1'),
       court2: Court(available: true, selected: false, title: 'Court 2'),
     ),
+    CourtSlot(
+      timeSlot: '16:00-17:00',
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
+    ),
+    CourtSlot(
+      timeSlot: '17:00-18:00',
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
+    ),
+    CourtSlot(
+      timeSlot: '18:00-19:00',
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
+    ),
+    CourtSlot(
+      timeSlot: '20:00-21:00',
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
+    ),
   ];
 
   bool existsSelectedCourt = false;
@@ -41,6 +61,7 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
       Navigator.pop(context);
 
       widget.notifyParent!(Booking(
+          dateTime: DateTime.parse('2022-04-30 03:04:05'),
           day: '30/03/2022',
           hour: selectedCourtSlot!.timeSlot,
           court: (selectedCourtSlot!.court1.selected ? 'Court 1' : 'Court 2'),

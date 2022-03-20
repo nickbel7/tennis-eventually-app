@@ -358,7 +358,7 @@ class _HeroState extends State<Hero> {
     return AlertDialog(
       title: const Text('Edit'),
       content: SizedBox(
-        height: 200,
+        height: 250,
         child: Column(
           children: [
             FbSocialInputField(

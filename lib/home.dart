@@ -22,9 +22,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   void _addedBooking(Booking newBooking) {
-    print(newBooking.hour);
-    print(newBooking.court);
-
     widget.notifyParent!(newBooking);
   }
 

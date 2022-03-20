@@ -5,11 +5,13 @@ import 'package:tennis_app/widgets/data_tiles.dart';
 
 class BookingsPage extends StatefulWidget {
   
-  final Booking? newBooking;
+  // final Booking? newBooking;
+  final List<Booking> bookings;
 
   const BookingsPage({
     Key? key,
-    this.newBooking,
+    // this.newBooking,
+    required this.bookings,
   }) : super(key: key);
 
   @override
@@ -19,15 +21,15 @@ class BookingsPage extends StatefulWidget {
 class _BookingsPageState extends State<BookingsPage> {
 
   // ALL BOOKINGS
-  final _bookings = List.generate(
-    15, 
-    (index) => Booking(
-      // DateTime.parse('2020-01-02 03:04:05');
-      dateTime: DateTime.parse('2022-03-20 03:04:00'),
-      day: '19/03/2022', 
-      hour: '18:00-19:00', 
-      court: 'Court 1'),
-  );
+  // final _bookings = List.generate(
+  //   15, 
+  //   (index) => Booking(
+  //     // DateTime.parse('2020-01-02 03:04:05');
+  //     dateTime: DateTime.parse('2022-03-20 03:04:00'),
+  //     day: '19/03/2022', 
+  //     hour: '18:00-19:00', 
+  //     court: 'Court 1'),
+  // );
 
   final _currentBookings = <Booking> [];
   final _previousBookings = <Booking> [];
@@ -37,24 +39,24 @@ class _BookingsPageState extends State<BookingsPage> {
   void initState() {
     super.initState();
 
-    for (var element in _bookings) {
+    for (var element in widget.bookings) {
       if (element.dateTime!.isAfter(DateTime.now())) {
         _currentBookings.add(element);
       } else {
         _previousBookings.add(element);
       }
     }
-    _currentBookings.add(Booking(
-      // DateTime.parse('2020-01-02 03:04:05');
-      dateTime: DateTime.parse('2022-04-22 03:04:00'),
-      day: '22/03/2022', 
-      hour: '14:00-15:00', 
-      court: 'Court 2'),
-    );
+    // _currentBookings.add(Booking(
+    //   // DateTime.parse('2020-01-02 03:04:05');
+    //   dateTime: DateTime.parse('2022-04-22 03:04:00'),
+    //   day: '22/03/2022', 
+    //   hour: '14:00-15:00', 
+    //   court: 'Court 2'),
+    // );
 
-    if (widget.newBooking != null) {
-      _currentBookings.add(widget.newBooking!);
-    }
+    // if (widget.newBooking != null) {
+    //   _currentBookings.add(widget.newBooking!);
+    // }
   }
 
   @override
