@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
@@ -10,16 +11,17 @@ import 'package:tennis_app/profile_edit.dart';
 import 'package:tennis_app/models/user.dart';
 import 'package:tennis_app/widgets/inputs.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_flutter/qr_flutter.dart';  // for QR generation
+import 'package:qr_flutter/qr_flutter.dart'; // for QR generation
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePage extends StatefulWidget {
-  // final bool isEditable;
+  final bool isEditable;
+  final String? firstName;
+  final String? lastName;
 
-  const ProfilePage({
-    // required this.isEditable,
-    Key? key,
-  }) : super(key: key);
+  const ProfilePage(
+      {Key? key, required this.isEditable, this.firstName, this.lastName})
+      : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -27,8 +29,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late User user = User(
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
+      firstName: widget.firstName ?? faker.person.firstName(),
+      lastName: widget.lastName ?? faker.person.lastName(),
       phone: faker.phoneNumber.us(),
       email: faker.internet.email(),
       ratingvalue: 3);
@@ -63,6 +65,34 @@ class _ProfilePageState extends State<ProfilePage> {
     //   ..showSnackBar(SnackBar(content: Text(user.firstName)));
   }
 
+  Widget _buildEditPage() {
+    if (widget.isEditable) {
+      return GestureDetector(
+        onTap: () {
+          _pushEditPage(context);
+        },
+        child: const Icon(Icons.edit),
+      );
+    }
+    return Container();
+  }
+
+  Widget _buildEditPageSocial() {
+    if (widget.isEditable) {
+      return IconButton(
+        icon: Icon(Icons.add_circle_outline_rounded,
+            color: AppTheme.colors.totallyBlack, size: 30.0),
+        onPressed: () async {
+          final SocialMedia = await showDialog(
+            context: context,
+            builder: (BuildContext context) => _addSocialLinks(context),
+          );
+        },
+      );
+    }
+    return Container();
+  }
+
   Widget _addSocialLinks(BuildContext context) {
     return Hero(
       social: social,
@@ -87,8 +117,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<PermissionStatus> _getCameraPermission() async {
     var status = await Permission.camera.status;
     if (!status.isGranted) {
-        final result = await Permission.camera.request();
-        return result;
+      final result = await Permission.camera.request();
+      return result;
     } else {
       return status;
     }
@@ -137,7 +167,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
-    
   }
 
   @override
@@ -167,14 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 25,
             child: Align(
               alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  _pushEditPage(context);
-                },
-                //////profile edit page
-
-                child: const Icon(Icons.edit),
-              ),
+              child: _buildEditPage(),
             ),
           ),
           Row(
@@ -219,52 +241,39 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               // const SizedBox(width: 5),
               IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.whatsapp,
-                  color: AppTheme.colors.totallyBlack,
-                  size: 30.0
-                ),
+                icon: Icon(FontAwesomeIcons.whatsapp,
+                    color: AppTheme.colors.totallyBlack, size: 30.0),
                 onPressed: () {
                   var url = social.viberLink;
                 },
               ),
               // const SizedBox(width: 25),
               IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.instagram,
-                  color: AppTheme.colors.totallyBlack, 
-                  size: 30.0
-                ),
+                icon: Icon(FontAwesomeIcons.instagram,
+                    color: AppTheme.colors.totallyBlack, size: 30.0),
                 onPressed: () {
                   var url = social.instagramLink;
                 },
               ),
               // const SizedBox(width: 25),
               IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.facebookF,
-                  color: AppTheme.colors.totallyBlack, 
-                  size: 25.0
-                ),
+                icon: Icon(FontAwesomeIcons.facebookF,
+                    color: AppTheme.colors.totallyBlack, size: 25.0),
                 onPressed: () {
                   var url = social.facebookLink;
                 },
               ),
-              // const SizedBox(width: 5),
-              //////////////Only to profile edit
-              IconButton(
-                icon: Icon(
-                  Icons.add_circle_outline_rounded,
-                  color: AppTheme.colors.totallyBlack, 
-                  size: 30.0
-                ),
-                onPressed: () async {
-                  final SocialMedia = await showDialog(
-                    context: context,
-                    builder: (BuildContext context) => _addSocialLinks(context),
-                  );
-                },
-              ),
+              _buildEditPageSocial(),
+              // IconButton(
+              //     icon: Icon(Icons.add_circle_outline_rounded,
+              //         color: AppTheme.colors.totallyBlack, size: 30.0),
+              //     onPressed: () async {
+              //       final SocialMedia = await showDialog(
+              //         context: context,
+              //         builder: (BuildContext context) =>
+              //             _addSocialLinks(context),
+              //       );
+              //     }),
             ],
           ),
           const SizedBox(
@@ -300,13 +309,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   SimpleButton(
-                    width: 200, 
+                    width: 200,
                     height: 40,
-                    fillcolor: AppTheme.colors.grassGreen, 
-                    textcolor: AppTheme.colors.totallyBlack, 
-                    text: "SCAN ME", 
+                    fillcolor: AppTheme.colors.grassGreen,
+                    textcolor: AppTheme.colors.totallyBlack,
+                    text: "SCAN ME",
                     onClick: _scanQR,
                   ),
                 ],

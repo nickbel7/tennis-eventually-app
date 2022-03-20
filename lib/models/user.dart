@@ -25,3 +25,11 @@ class SocialMedia {
     required this.viberLink,
   });
 }
+
+class Edit {
+  bool isEditable;
+
+  Edit({
+    required this.isEditable,
+  });
+}

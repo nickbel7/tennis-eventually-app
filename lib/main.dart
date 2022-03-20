@@ -53,11 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
       //   ),
       //   const SearchPage(),
       //   const ProfilePage(),
-      // ]; 
+      // ];
       _pages[1] = BookingsPage(
         newBooking: _newBooking,
       );
-
     });
   }
 
@@ -77,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //     ),
   //     const SearchPage(),
   //     const ProfilePage(),
-  //   ]; 
+  //   ];
   // }
 
   List<Widget> _pages = [];
@@ -93,8 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
         newBooking: _newBooking,
       ),
       const SearchPage(),
-      const ProfilePage(),
-    ]; 
+      const ProfilePage(
+        isEditable: true,
+      ),
+    ];
   }
 
   @override
