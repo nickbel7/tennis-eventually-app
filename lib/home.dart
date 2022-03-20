@@ -5,15 +5,29 @@ import 'package:tennis_app/home_opponent.dart';
 import 'package:tennis_app/home_booking.dart';
 import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/player_widgets.dart';
+import 'package:tennis_app/widgets/data_tiles.dart';
+import 'package:tennis_app/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Function(Booking newB)? notifyParent;
+
+  const HomePage({
+    Key? key,
+    this.notifyParent,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  void _addedBooking(Booking newBooking) {
+    print(newBooking.hour);
+    print(newBooking.court);
+
+    widget.notifyParent!(newBooking);
+  }
+
   void _pushBooking() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -25,12 +39,12 @@ class _HomePageState extends State<HomePage> {
               centerTitle: true,
               title: const Text(
                 'Tennis EveNTUAlly',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            body: const HomeBookingPage(),
+            body: HomeBookingPage(
+              notifyParent: _addedBooking,
+            ),
           );
         },
       ),
@@ -38,26 +52,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _pushOpponent() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 60,
-              backgroundColor: AppTheme.colors.grassGreen,
-              centerTitle: true,
-              title: const Text(
-                'Tennis EveNTUAlly',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-            body: const HomeOpponentPage(),
-          );
-        }
-      )
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 60,
+          backgroundColor: AppTheme.colors.grassGreen,
+          centerTitle: true,
+          title: const Text(
+            'Tennis EveNTUAlly',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: const HomeOpponentPage(),
+      );
+    }));
   }
 
   @override
@@ -128,9 +137,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                   itemCount: 50,
                   itemBuilder: (context, index) {
-                    return PlayerCard(
-                      firstName: faker.person.firstName(),
-                      lastName: faker.person.lastName(),
+                    var firstName = faker.person.firstName();
+                    var lastName = faker.person.lastName();
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              toolbarHeight: 60,
+                              backgroundColor: AppTheme.colors.grassGreen,
+                              centerTitle: true,
+                              title: const Text('Tennis EveNTUAlly',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            body: ProfilePage(
+                              isEditable: false,
+                              firstName: firstName,
+                              lastName: lastName,
+                            ),
+                          );
+                        }));
+                      },
+                      child: PlayerCard(
+                        firstName: firstName,
+                        lastName: lastName,
+                      ),
                     );
                   },
                   // children: const [
@@ -149,4 +182,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

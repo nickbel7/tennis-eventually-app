@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tennis_app/theme/app_theme.dart';
@@ -8,6 +10,9 @@ import 'package:tennis_app/widgets/headers.dart';
 import 'package:tennis_app/profile_edit.dart';
 import 'package:tennis_app/models/user.dart';
 import 'package:tennis_app/widgets/inputs.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart'; // for QR generation
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isEditable;
@@ -74,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildEditPageSocial() {
     if (widget.isEditable) {
-      IconButton(
+      return IconButton(
         icon: Icon(Icons.add_circle_outline_rounded,
             color: AppTheme.colors.totallyBlack, size: 30.0),
         onPressed: () async {
@@ -92,6 +97,82 @@ class _ProfilePageState extends State<ProfilePage> {
     return Hero(
       social: social,
     );
+  }
+
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? result;
+  QRViewController? controller;
+
+  @override
+  void reassemble() async {
+    super.reassemble();
+
+    if (Platform.isAndroid) {
+      await controller!.pauseCamera();
+    } else if (Platform.isIOS) {
+      controller!.resumeCamera();
+    }
+  }
+
+  Future<PermissionStatus> _getCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      final result = await Permission.camera.request();
+      return result;
+    } else {
+      return status;
+    }
+  }
+
+  void _scanQR() async {
+    PermissionStatus status = await _getCameraPermission();
+
+    if (status.isGranted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('QR Code Scanner'),
+                toolbarHeight: 60,
+                centerTitle: true,
+                backgroundColor: AppTheme.colors.grassGreen,
+              ),
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    // child: Text('Permission Granted'),
+                    child: QRView(
+                      key: qrKey,
+                      overlay: QrScannerOverlayShape(
+                        borderWidth: 10,
+                        borderRadius: 10,
+                        borderColor: AppTheme.colors.tennisBall,
+                        cutOutSize: MediaQuery.of(context).size.width * 0.8,
+                      ),
+                      onQRViewCreated: (QRViewController controller) {
+                        this.controller = controller;
+                        controller.scannedDataStream.listen((scanData) {
+                          setState(() {
+                            result = scanData;
+                          });
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -140,31 +221,33 @@ class _ProfilePageState extends State<ProfilePage> {
               Expanded(
                 flex: 4,
                 child: Container(
-                    // height: 150,
-                    margin: const EdgeInsets.only(left: 10),
-                    child: ProfileInfoContainer(
-                      user: user,
-                    )),
+                  height: 150,
+                  margin: const EdgeInsets.only(left: 10),
+                  child: ProfileInfoContainer(
+                    user: user,
+                  ),
+                ),
               ),
             ],
           ),
           // SOCIAL ICONS
           const SizedBox(
-            height: 15,
+            height: 5,
           ),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(width: 5),
+              // const SizedBox(width: 5),
               IconButton(
-                  icon: Icon(FontAwesomeIcons.whatsapp,
-                      color: AppTheme.colors.totallyBlack, size: 30.0),
-                  onPressed: () {
-                    var url = social.viberLink;
-                  }),
-              const SizedBox(width: 25),
+                icon: Icon(FontAwesomeIcons.whatsapp,
+                    color: AppTheme.colors.totallyBlack, size: 30.0),
+                onPressed: () {
+                  var url = social.viberLink;
+                },
+              ),
+              // const SizedBox(width: 25),
               IconButton(
                 icon: Icon(FontAwesomeIcons.instagram,
                     color: AppTheme.colors.totallyBlack, size: 30.0),
@@ -172,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   var url = social.instagramLink;
                 },
               ),
-              const SizedBox(width: 25),
+              // const SizedBox(width: 25),
               IconButton(
                 icon: Icon(FontAwesomeIcons.facebookF,
                     color: AppTheme.colors.totallyBlack, size: 25.0),
@@ -180,22 +263,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   var url = social.facebookLink;
                 },
               ),
-              const SizedBox(width: 5),
-              // _buildEditPageSocial(),
-              IconButton(
-                  icon: Icon(Icons.add_circle_outline_rounded,
-                      color: AppTheme.colors.totallyBlack, size: 30.0),
-                  onPressed: () async {
-                    final SocialMedia = await showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          _addSocialLinks(context),
-                    );
-                  }),
+              _buildEditPageSocial(),
+              // IconButton(
+              //     icon: Icon(Icons.add_circle_outline_rounded,
+              //         color: AppTheme.colors.totallyBlack, size: 30.0),
+              //     onPressed: () async {
+              //       final SocialMedia = await showDialog(
+              //         context: context,
+              //         builder: (BuildContext context) =>
+              //             _addSocialLinks(context),
+              //       );
+              //     }),
             ],
           ),
           const SizedBox(
-            height: 15,
+            height: 5,
           ),
           Column(
             children: [
@@ -212,34 +294,36 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 20,
           ),
           Expanded(
-              child: Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    child: Image.asset(
-                      "assets/QR_code.png",
-                      fit: BoxFit.fill,
+            child: Align(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                      child: Image.asset(
+                        "assets/QR_code.png",
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SimpleButton(
-                  fillcolor: AppTheme.colors.grassGreen,
-                  textcolor: AppTheme.colors.totallyBlack,
-                  text: "SCAN ME",
-                  width: 200,
-                  height: 40,
-                ),
-              ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SimpleButton(
+                    width: 200,
+                    height: 40,
+                    fillcolor: AppTheme.colors.grassGreen,
+                    textcolor: AppTheme.colors.totallyBlack,
+                    text: "SCAN ME",
+                    onClick: _scanQR,
+                  ),
+                ],
+              ),
             ),
-          ))
+          ),
         ],
       ),
     );

@@ -6,8 +6,14 @@ import 'package:tennis_app/widgets/inputs.dart';
 import 'package:tennis_app/widgets/data_tiles.dart';
 
 class HomeBookingPage extends StatefulWidget {
-  const HomeBookingPage({Key? key, List<CourtCardWidget>? courtSlots})
-      : super(key: key);
+
+  final Function(Booking newB)? notifyParent;
+
+  const HomeBookingPage({
+    Key? key, 
+    List<CourtCardWidget>? courtSlots,
+    this.notifyParent,
+  }) : super(key: key);
 
   @override
   State<HomeBookingPage> createState() => _HomeBookingPageState();
@@ -33,28 +39,34 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
   void _popBooking() {
     if (existsSelectedCourt) {
       Navigator.pop(context);
-    }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Nice ! Your court is booked'),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {},
+      widget.notifyParent!(Booking(
+          day: '30/03/2022',
+          hour: selectedCourtSlot!.timeSlot,
+          court: (selectedCourtSlot!.court1.selected ? 'Court 1' : 'Court 2'),
+        )
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Nice ! Your court is booked'),
+          action: SnackBarAction(
+            label: 'OK', 
+            onPressed: () {},
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  void _tappedCourt(slotInstance, idx) {
-    // idx is not really needed, flutter uses the same instance of CourtSlot
-
+  void _tappedCourt(slotInstance, idx) {  // idx is not really needed, flutter uses the same instance of CourtSlot
     setState(() {
+      // RESET PREVIOUSLY SELECTED COURT
       if (existsSelectedCourt && selectedCourtSlot != slotInstance) {
         selectedCourtSlot!.court1.selected = false;
         selectedCourtSlot!.court2.selected = false;
       }
-
+      // SET NEW SELECTED COURT
       // _courtSlots[idx] = slotInstance;
       existsSelectedCourt =
           (slotInstance.court1.selected || slotInstance.court2.selected
@@ -106,29 +118,6 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
           const SizedBox(height: 5),
           Expanded(
             child: _buildCourtSlots(),
-            // child: ListView(
-            // children: _courtCardBuilder(),
-            // children: <Widget>[
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            //   CourtCardWidget(
-            //     notifyParent: tappedCourt,
-            //   ),
-            // ],
-            // ),
           ),
           Align(
             alignment: Alignment.bottomCenter,

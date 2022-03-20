@@ -81,6 +81,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
+// CLASSES
 class Player {
   final String firstName;
   final String lastName;
