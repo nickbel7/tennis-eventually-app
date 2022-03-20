@@ -3,8 +3,17 @@ import 'package:tennis_app/theme/app_theme.dart';
 import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/inputs.dart';
 
-class HomeOpponentPage extends StatelessWidget {
+class HomeOpponentPage extends StatefulWidget {
   const HomeOpponentPage({Key? key}) : super(key: key);
+
+  @override
+  State<HomeOpponentPage> createState() => _HomeOpponentPageState();
+}
+
+class _HomeOpponentPageState extends State<HomeOpponentPage> {
+  void _popBooking() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +52,8 @@ class HomeOpponentPage extends StatelessWidget {
                     textcolor: Colors.white,
                     text: 'Confirm',
                     width: 277,
-                    height: 36
+                    height: 36,
+                    onClick: _popBooking,
                   ),
                 ),
               ],

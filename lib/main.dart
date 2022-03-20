@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       title: 'Tennis EveNTUAlly',
       home: const MyHomePage(
         title: 'Tennis EveNTUAlly',
@@ -34,11 +34,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();  
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   int _selectedIndex = 0;
 
   void _onTabTapped(int index) {
@@ -118,9 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         title: Text(
           widget.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
 
@@ -148,14 +145,14 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onTabTapped,
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppTheme.colors.amazonGreen,   // SELECTED TAB COLOR
+        selectedItemColor: AppTheme.colors.amazonGreen, // SELECTED TAB COLOR
         unselectedItemColor: const Color(0xCFFFFFFF),
-        backgroundColor: AppTheme.colors.grassGreen,      // BACKGROUND COLOR
+        backgroundColor: AppTheme.colors.grassGreen, // BACKGROUND COLOR
         iconSize: 30,
         selectedFontSize: 15,
         unselectedFontSize: 15,
         elevation: 12,
-        items: const  [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

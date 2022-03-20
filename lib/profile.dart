@@ -1,22 +1,73 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
 import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/headers.dart';
-import 'package:qr_flutter/qr_flutter.dart';  // for QR generation
+import 'package:tennis_app/profile_edit.dart';
+import 'package:tennis_app/models/user.dart';
+import 'package:tennis_app/widgets/inputs.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'dart:io';
+import 'package:qr_flutter/qr_flutter.dart';  // for QR generation
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  // final bool isEditable;
+
+  const ProfilePage({
+    // required this.isEditable,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late User user = User(
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      phone: faker.phoneNumber.us(),
+      email: faker.internet.email(),
+      ratingvalue: 3);
+
+  late SocialMedia social = SocialMedia(
+      facebookLink: 'www.facebook.com',
+      instagramLink: 'www.instagram.com',
+      viberLink: 'www.viber.com');
+
+  void _pushEditPage(BuildContext context) async {
+    var result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 60,
+          backgroundColor: AppTheme.colors.grassGreen,
+          centerTitle: true,
+          title: const Text('Tennis EveNTUAlly',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        body: ProfileEditPage(
+          user: user,
+        ),
+      );
+    }));
+    setState(() {
+      user = result;
+    });
+
+    // ScaffoldMessenger.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text(user.firstName)));
+  }
+
+  Widget _addSocialLinks(BuildContext context) {
+    return Hero(
+      social: social,
+    );
+  }
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
@@ -97,6 +148,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _stars = List.generate(
+      user.ratingvalue.toInt(),
+      (index) => Icon(
+        Icons.star,
+        color: AppTheme.colors.totallyBlack,
+        size: 26,
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
       child: Column(
@@ -110,8 +169,10 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-
+                  _pushEditPage(context);
                 },
+                //////profile edit page
+
                 child: const Icon(Icons.edit),
               ),
             ),
@@ -133,84 +194,96 @@ class _ProfilePageState extends State<ProfilePage> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                ), 
+                ),
               ),
               Expanded(
                 flex: 4,
                 child: Container(
                   height: 150,
                   margin: const EdgeInsets.only(left: 10),
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(color: const Color(0xFFFF0000)),
-                  // ),
                   child: ProfileInfoContainer(
-                    firstName: faker.person.firstName(),
-                    lastName: faker.person.lastName(),
-                    phone: faker.phoneNumber.us(),
-                    email: faker.internet.email(),
-                  )
+                    user: user,
+                  ),
                 ),
               ),
             ],
           ),
           // SOCIAL ICONS
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 5,
+          ),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:[
-              const SizedBox(width: 5),
-              Icon(
-                FontAwesomeIcons.whatsapp, 
-                color: AppTheme.colors.totallyBlack, 
-                size: 30.0),
-              const SizedBox(width: 25),
-              Icon(
-                FontAwesomeIcons.instagram, 
-                color: AppTheme.colors.totallyBlack, 
-                size: 30.0),
-              const SizedBox(width: 25),
-              Icon(
-                FontAwesomeIcons.facebookF, 
-                color: AppTheme.colors.totallyBlack, 
-                size: 25.0),
+            children: [
+              // const SizedBox(width: 5),
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.whatsapp,
+                  color: AppTheme.colors.totallyBlack,
+                  size: 30.0
+                ),
+                onPressed: () {
+                  var url = social.viberLink;
+                },
+              ),
+              // const SizedBox(width: 25),
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.instagram,
+                  color: AppTheme.colors.totallyBlack, 
+                  size: 30.0
+                ),
+                onPressed: () {
+                  var url = social.instagramLink;
+                },
+              ),
+              // const SizedBox(width: 25),
+              IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.facebookF,
+                  color: AppTheme.colors.totallyBlack, 
+                  size: 25.0
+                ),
+                onPressed: () {
+                  var url = social.facebookLink;
+                },
+              ),
+              // const SizedBox(width: 5),
+              //////////////Only to profile edit
+              IconButton(
+                icon: Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: AppTheme.colors.totallyBlack, 
+                  size: 30.0
+                ),
+                onPressed: () async {
+                  final SocialMedia = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) => _addSocialLinks(context),
+                  );
+                },
+              ),
             ],
           ),
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 5,
+          ),
           Column(
             children: [
-              const SectionHeader(
-                header: "Level"
-              ),
+              const SectionHeader(header: "Level"),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:[
-                  const SizedBox(width: 10,),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                  const SizedBox(width: 15,),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                  const SizedBox(width: 15,),
-                  Icon(
-                    Icons.star,
-                    color: AppTheme.colors.totallyBlack,
-                    size: 26,
-                  ),
-                ],
+                children: _stars,
               ),
             ],
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: Align(
               alignment: Alignment.center,
@@ -229,38 +302,100 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 10,),
                   SimpleButton(
+                    width: 200, 
+                    height: 40,
                     fillcolor: AppTheme.colors.grassGreen, 
                     textcolor: AppTheme.colors.totallyBlack, 
                     text: "SCAN ME", 
-                    width: 200, 
-                    height: 40,
                     onClick: _scanQR,
                   ),
                 ],
               ),
-            )
-          )
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class ProfileInfoContainer extends StatelessWidget {
+class Hero extends StatefulWidget {
+  final SocialMedia social;
 
-  final String firstName;
-  final String lastName;
-  final String? phone;
-  final String? email;
+  const Hero({
+    required this.social,
+  });
+  @override
+  State<Hero> createState() => _HeroState();
+}
+
+class _HeroState extends State<Hero> {
+  void _popSubmit(BuildContext context) async {
+    Navigator.pop(context, widget.social);
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Nice! Your social media links changed'),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {},
+      ),
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit'),
+      content: SizedBox(
+        height: 200,
+        child: Column(
+          children: [
+            FbSocialInputField(
+              labeltext: "Facebook Link",
+              social: widget.social,
+            ),
+            IgSocialInputField(
+              labeltext: "Instagram Link",
+              social: widget.social,
+            ),
+            VbSocialInputField(
+              labeltext: "What's up Link",
+              social: widget.social,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Center(
+          child: SimpleButton(
+            fillcolor: AppTheme.colors.amazonGreen,
+            textcolor: AppTheme.colors.totallyWhite,
+            text: "ADD",
+            width: 130,
+            height: 27,
+            onClick: () {
+              _popSubmit(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class ProfileInfoContainer extends StatefulWidget {
+  final User user;
 
   const ProfileInfoContainer({
     Key? key,
-    required this.firstName,
-    required this.lastName,
-    this.phone,
-    this.email,
+    required this.user,
   }) : super(key: key);
 
+  @override
+  State<ProfileInfoContainer> createState() => _ProfileInfoContainerState();
+}
+
+class _ProfileInfoContainerState extends State<ProfileInfoContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -277,12 +412,14 @@ class ProfileInfoContainer extends StatelessWidget {
           ),
         ),
         Text(
-          firstName + " " + lastName,
+          widget.user.firstName + " " + widget.user.lastName,
           style: const TextStyle(
             fontSize: 16,
           ),
         ),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         Text(
           "Phone : ",
           style: TextStyle(
@@ -292,12 +429,14 @@ class ProfileInfoContainer extends StatelessWidget {
           ),
         ),
         Text(
-          (phone ?? " "),
+          (widget.user.phone),
           style: const TextStyle(
             fontSize: 16,
           ),
         ),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         Text(
           "Email : ",
           style: TextStyle(
@@ -307,7 +446,7 @@ class ProfileInfoContainer extends StatelessWidget {
           ),
         ),
         Text(
-          (email ?? " "),
+          (widget.user.email),
           style: const TextStyle(
             fontSize: 16,
           ),

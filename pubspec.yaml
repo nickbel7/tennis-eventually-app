@@ -41,6 +41,8 @@ dependencies:
   qr_flutter: ^4.0.0
   permission_handler: ^9.0.2
   qr_code_scanner: ^0.7.0
+  flutter_rating_bar: ^4.0.0
+
 
 dev_dependencies:
   flutter_test:

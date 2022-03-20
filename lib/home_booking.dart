@@ -20,36 +20,19 @@ class HomeBookingPage extends StatefulWidget {
 }
 
 class _HomeBookingPageState extends State<HomeBookingPage> {
-
   final _courtSlots = <CourtSlot>[
     CourtSlot(
       timeSlot: '13:00-14:00',
-      court1: Court(
-        available: true,
-        selected: false,
-        title: 'Court 1'
-      ), 
-      court2: Court(
-        available: true,
-        selected: false,
-        title: 'Court 2'
-      ), 
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
     ),
     CourtSlot(
       timeSlot: '15:00-16:00',
-      court1: Court(
-        available: true,
-        selected: false,
-        title: 'Court 1'
-      ), 
-      court2: Court(
-        available: true,
-        selected: false,
-        title: 'Court 2'
-      ), 
+      court1: Court(available: true, selected: false, title: 'Court 1'),
+      court2: Court(available: true, selected: false, title: 'Court 2'),
     ),
   ];
-  
+
   bool existsSelectedCourt = false;
   CourtSlot? selectedCourtSlot;
 
@@ -85,7 +68,10 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
       }
       // SET NEW SELECTED COURT
       // _courtSlots[idx] = slotInstance;
-      existsSelectedCourt = (slotInstance.court1.selected || slotInstance.court2.selected ? true : false);
+      existsSelectedCourt =
+          (slotInstance.court1.selected || slotInstance.court2.selected
+              ? true
+              : false);
       selectedCourtSlot = (existsSelectedCourt ? slotInstance : null);
     });
   }
@@ -106,7 +92,7 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
   // DEPRICATED
   // _courtCardBuilder() {
   //   return List.generate(
-  //     3, 
+  //     3,
   //     (index) => CourtCardWidget(
   //       notifyParent: tappedCourt,
   //     ),
@@ -136,7 +122,9 @@ class _HomeBookingPageState extends State<HomeBookingPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: SimpleButton(
-              fillcolor: (existsSelectedCourt ? AppTheme.colors.amazonGreen : AppTheme.colors.grassGreen),
+              fillcolor: (existsSelectedCourt
+                  ? AppTheme.colors.amazonGreen
+                  : AppTheme.colors.grassGreen),
               textcolor: AppTheme.colors.sandStorm,
               text: 'BOOK COURT',
               width: 204,
