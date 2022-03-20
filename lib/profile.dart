@@ -4,9 +4,96 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:faker/faker.dart';
 import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/headers.dart';
+import 'package:qr_flutter/qr_flutter.dart';  // for QR generation
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? result;
+  QRViewController? controller;
+
+  @override
+  void reassemble() async {
+    super.reassemble();
+
+    if (Platform.isAndroid) {
+      await controller!.pauseCamera();
+    } else if (Platform.isIOS) {
+      controller!.resumeCamera();
+    }
+  }
+
+  Future<PermissionStatus> _getCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+        final result = await Permission.camera.request();
+        return result;
+    } else {
+      return status;
+    }
+  }
+
+  void _scanQR() async {
+    PermissionStatus status = await _getCameraPermission();
+
+    if (status.isGranted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('QR Code Scanner'),
+                toolbarHeight: 60,
+                centerTitle: true,
+                backgroundColor: AppTheme.colors.grassGreen,
+              ),
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    // child: Text('Permission Granted'),
+                    child: QRView(
+                      key: qrKey,
+                      overlay: QrScannerOverlayShape(
+                        borderWidth: 10,
+                        borderRadius: 10,
+                        borderColor: AppTheme.colors.tennisBall,
+                        cutOutSize: MediaQuery.of(context).size.width * 0.8,
+                      ),
+                      onQRViewCreated: (QRViewController controller) {
+                        this.controller = controller;
+                        controller.scannedDataStream.listen((scanData) {
+                          setState(() {
+                            result = scanData;
+                          });
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+    
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +234,7 @@ class ProfilePage extends StatelessWidget {
                     text: "SCAN ME", 
                     width: 200, 
                     height: 40,
+                    onClick: _scanQR,
                   ),
                 ],
               ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 
-// DEPRICATED
 class BookingRow extends StatelessWidget {
 
   final String day;
@@ -268,6 +267,7 @@ class _CourtCardState extends State<CourtCardWidget> {
   }
 }
 
+// CLASSES
 class Court{
   String title;
   bool available;
@@ -291,5 +291,19 @@ class CourtSlot{
     required this.court1,
     required this.court2,
     this.selectedCourt,
+  });
+}
+
+class Booking{
+  final DateTime? dateTime;
+  final String day;
+  final String hour;
+  final String court;
+
+  const Booking({
+    this.dateTime,
+    required this.day,
+    required this.hour,
+    required this.court,
   });
 }

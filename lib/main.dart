@@ -4,6 +4,7 @@ import 'package:tennis_app/profile.dart';
 import 'package:tennis_app/search.dart';
 import 'package:tennis_app/theme/app_theme.dart';
 import './bookings.dart';
+import 'package:tennis_app/widgets/data_tiles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,15 +44,59 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onTabTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
+      // _pages = <Widget>[
+      //   HomePage(
+      //     notifyParent: _addedBooking,
+      //   ),
+      //   BookingsPage(
+      //     newBooking: _newBooking,
+      //   ),
+      //   const SearchPage(),
+      //   const ProfilePage(),
+      // ]; 
+      _pages[1] = BookingsPage(
+        newBooking: _newBooking,
+      );
+
     });
   }
 
-  static final List<Widget> _pages = <Widget>[
-    const HomePage(),
-    const BookingsPage(),
-    const SearchPage(),
-    const ProfilePage(),
-  ]; 
+  Booking? _newBooking;
+  void _addedBooking(Booking newBooking) {
+    _newBooking = newBooking;
+    print('Added Successfully');
+  }
+
+  // List<Widget> _pages() {
+  //   return <Widget>[
+  //     HomePage(
+  //       notifyParent: _addedBooking,
+  //     ),
+  //     BookingsPage(
+  //       newBooking: _newBooking,
+  //     ),
+  //     const SearchPage(),
+  //     const ProfilePage(),
+  //   ]; 
+  // }
+
+  List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = <Widget>[
+      HomePage(
+        notifyParent: _addedBooking,
+      ),
+      BookingsPage(
+        newBooking: _newBooking,
+      ),
+      const SearchPage(),
+      const ProfilePage(),
+    ]; 
+  }
 
   @override
   Widget build(BuildContext context) {

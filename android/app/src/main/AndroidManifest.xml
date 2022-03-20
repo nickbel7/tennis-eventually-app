@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tennis_app">
    <application
-        android:label="tennis_app"
+        android:label="TENNIS EveNTUAlly"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -38,4 +38,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!-- <uses-permission android:name="android.permission.CAMERA"/> -->
 </manifest>

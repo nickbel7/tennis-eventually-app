@@ -5,15 +5,30 @@ import 'package:tennis_app/home_opponent.dart';
 import 'package:tennis_app/home_booking.dart';
 import 'package:tennis_app/widgets/buttons.dart';
 import 'package:tennis_app/widgets/player_widgets.dart';
+import 'package:tennis_app/widgets/data_tiles.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+
+  final Function(Booking newB)? notifyParent;
+
+  const HomePage({
+    Key? key,
+    this.notifyParent,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+  void _addedBooking(Booking newBooking) {
+    print(newBooking.hour);
+    print(newBooking.court);
+
+    widget.notifyParent!(newBooking);
+  }
+
   void _pushBooking() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -30,7 +45,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            body: const HomeBookingPage(),
+            body: HomeBookingPage(
+              notifyParent: _addedBooking,
+            ),
           );
         },
       ),
